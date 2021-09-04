@@ -1,82 +1,70 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CutTheFlowers
 {
     public class Stem : MonoBehaviour
     {
+        private bool _isDivided;
+        private Collider2D _thisCollider;
         private SpriteRenderer _thisSpriteRenderer;
         public GameObject Blossom;
         public float GrowSpeed = 1f;
+        public GameObject SpriteObj;
 
         private void Start()
         {
-            _thisSpriteRenderer = GetComponent<SpriteRenderer>();
+            _thisCollider = GetComponent<Collider2D>();
+            _thisSpriteRenderer = SpriteObj.GetComponent<SpriteRenderer>();
         }
 
         private void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !_isDivided)
             {
-                Grow(GrowSpeed);
+                var delta = GrowSpeed * Vector3.up * Time.deltaTime;
+                Grow(delta);
             }
         }
 
         public void Divide(Vector2 worldPoint)
         {
-            CreateUpperPart(worldPoint);
-            CreateDownPart(worldPoint);
+            var dividePoint = SpriteObj.transform.InverseTransformPoint(worldPoint);
+            var blossomPos = SpriteObj.transform.InverseTransformPoint(Blossom.transform.position);
 
-            Destroy(gameObject);
+            CreatePart(dividePoint, Vector3.zero, new Vector3(1f, blossomPos.y - dividePoint.y, 1f));
+            CreatePart(dividePoint, Vector3.forward * 180f, new Vector3(1f, dividePoint.y, 1f));
+
+            _isDivided = true;
+
+            Destroy(SpriteObj);
+            Destroy(_thisCollider);
         }
 
-        private void Grow(float speed)
+        private void Grow(Vector3 delta)
         {
-            var delta = speed * Vector3.up * Time.deltaTime;
             transform.localScale += delta;
-            transform.localPosition += delta / 2;
             Blossom.transform.localPosition += delta;
         }
 
-        private GameObject CreateUpperPart(Vector2 worldPoint)
+        private GameObject CreatePart(Vector2 pos, Vector3 eulerRot, Vector3 scale)
         {
-            var upperPart = new GameObject("Upper", typeof(SpriteRenderer));
+            var part = new GameObject("Part", typeof(SpriteRenderer));
 
-            var upperSpriteRenderer = upperPart.GetComponent<SpriteRenderer>();
-            SetSpriteRenderer(ref upperSpriteRenderer);
+            var spriteRenderer = part.GetComponent<SpriteRenderer>();
+            SetSpriteRenderer(ref spriteRenderer);
 
-            var upBorderY = transform.position.y + transform.localScale.y / 2;
-            var center = worldPoint.y + (upBorderY - worldPoint.y) / 2;
-            upperPart.transform.position = new Vector3(transform.position.x, center);
-            upperPart.transform.localScale = new Vector3(transform.localScale.x, (upBorderY - worldPoint.y));
-            upperPart.transform.rotation = transform.rotation;
-            upperPart.transform.SetParent(transform.parent);
+            part.transform.SetParent(transform, false);
+            part.transform.localPosition = Vector3.up * pos.y;
+            part.transform.localRotation = Quaternion.Euler(eulerRot);
+            part.transform.localScale = scale;
 
-            return upperPart;
-        }
-
-        private GameObject CreateDownPart(Vector2 worldPoint)
-        {
-            var downPart = new GameObject("Down", typeof(SpriteRenderer));
-
-            var downSpriteRenderer = downPart.GetComponent<SpriteRenderer>();
-            SetSpriteRenderer(ref downSpriteRenderer);
-
-            var downBorderY = transform.position.y - transform.localScale.y / 2;
-            var center = worldPoint.y - (worldPoint.y - downBorderY) / 2;
-            downPart.transform.position = new Vector3(transform.position.x, center);
-            downPart.transform.localScale = new Vector3(transform.localScale.x, (worldPoint.y - downBorderY));
-            downPart.transform.rotation = transform.rotation;
-            downPart.transform.SetParent(transform.parent);
-
-            return downPart;
+            return part;
         }
 
         private void SetSpriteRenderer(ref SpriteRenderer spriteRenderer)
         {
-            spriteRenderer.color = _thisSpriteRenderer.color;
             spriteRenderer.sprite = _thisSpriteRenderer.sprite;
+            spriteRenderer.color = _thisSpriteRenderer.color;
         }
     }
 }
