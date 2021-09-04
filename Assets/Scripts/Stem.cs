@@ -7,14 +7,21 @@ namespace CutTheFlowers
         private bool _isDivided;
         private Collider2D _thisCollider;
         private SpriteRenderer _thisSpriteRenderer;
+        private Platform _platform;
         public GameObject Blossom;
         public float GrowSpeed = 1f;
         public GameObject SpriteObj;
+        
+        public float Size
+        {
+            set => Grow(Vector3.up * value);
+        }
 
         private void Start()
         {
             _thisCollider = GetComponent<Collider2D>();
             _thisSpriteRenderer = SpriteObj.GetComponent<SpriteRenderer>();
+            _platform = GetComponentInParent<Platform>();
         }
 
         private void Update()
@@ -30,7 +37,8 @@ namespace CutTheFlowers
         {
             var dividePoint = SpriteObj.transform.InverseTransformPoint(worldPoint);
             var blossomPos = SpriteObj.transform.InverseTransformPoint(Blossom.transform.position);
-
+            var res = blossomPos.y - dividePoint.y;
+            _platform.Score += res;
             CreatePart(dividePoint, Vector3.zero, new Vector3(1f, blossomPos.y - dividePoint.y, 1f));
             CreatePart(dividePoint, Vector3.forward * 180f, new Vector3(1f, dividePoint.y, 1f));
 
@@ -38,6 +46,8 @@ namespace CutTheFlowers
 
             Destroy(SpriteObj);
             Destroy(_thisCollider);
+
+            Destroy(transform.parent.gameObject);
         }
 
         private void Grow(Vector3 delta)

@@ -6,7 +6,7 @@ namespace CutTheFlowers
     {
         private readonly RaycastHit2D[] _raycastHits = new RaycastHit2D[1];
         private Collider2D _thisCollider;
-
+        
         private void Start()
         {
             _thisCollider = GetComponent<Collider2D>();
