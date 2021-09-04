@@ -5,7 +5,7 @@ namespace CutTheFlowers
 {
     public class Platform : MonoBehaviour
     {
-        private const float MAX_START_FLOWER_SIZE = 0.2f;
+        private const float MAX_START_FLOWER_SIZE = 1f;
         private float _score;
         public GameObject Flower;
         public int FlowerCount;
@@ -43,6 +43,13 @@ namespace CutTheFlowers
         {
             for (var i = 0; i < count; i++)
                 PlaceFlower(360f / count * i, isSizeRandom ? Random.value * MAX_START_FLOWER_SIZE : 0f);
+        }
+
+        public void Restart(bool isRandom)
+        {
+            for (var i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            PlaceFlowers(isRandom ? (int) (Random.value * 10f) : 5, true);
+            Score = 0f;
         }
     }
 }
