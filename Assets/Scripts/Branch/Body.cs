@@ -7,7 +7,7 @@ namespace Vac.Branch
         private bool _isDivided;
         private Collider2D _thisCollider;
         private SpriteRenderer _thisSpriteRenderer;
-        private Platform.Platform _platform;
+        private Core.Core _core;
         public GameObject Top;
         public float GrowSpeed = 1f;
         public GameObject SpriteObj;
@@ -21,7 +21,7 @@ namespace Vac.Branch
         {
             _thisCollider = GetComponent<Collider2D>();
             _thisSpriteRenderer = SpriteObj.GetComponent<SpriteRenderer>();
-            _platform = GetComponentInParent<Platform.Platform>();
+            _core = GetComponentInParent<Core.Core>();
         }
 
         private void Update()
@@ -38,7 +38,7 @@ namespace Vac.Branch
             var dividePoint = SpriteObj.transform.InverseTransformPoint(worldPoint);
             var blossomPos = SpriteObj.transform.InverseTransformPoint(Top.transform.position);
             var res = blossomPos.y - dividePoint.y;
-            _platform.Score += res;
+            _core.Score += res;
             CreatePart(dividePoint, Vector3.zero, new Vector3(1f, blossomPos.y - dividePoint.y, 1f));
             CreatePart(dividePoint, Vector3.forward * 180f, new Vector3(1f, dividePoint.y, 1f));
 
@@ -76,5 +76,12 @@ namespace Vac.Branch
             spriteRenderer.sprite = _thisSpriteRenderer.sprite;
             spriteRenderer.color = _thisSpriteRenderer.color;
         }
+    }
+
+    [System.Serializable]
+    public struct BranchParameters
+    {
+        public float Size;
+        public float AnglePosition;
     }
 }

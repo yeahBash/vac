@@ -1,22 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Vac.Branch;
 
 namespace Vac.Level
 {
     [CreateAssetMenu(fileName = "New Level", menuName = "Level")]
     public class Level : ScriptableObject
     {
-        public Sprite Core;
+        public Vector2 DestroyerPos;
+        public float RotationSpeed;
         public BranchParameters[] Branches;
-    }
-
-    [System.Serializable]
-    public struct BranchParameters
-    {
-        public Sprite Body;
-        public Sprite Top;
-        public int Size;
-        public int AnglePosition;
     }
 }

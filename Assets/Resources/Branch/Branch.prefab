@@ -159,6 +159,10 @@ PrefabInstance:
       value: Body
       objectReference: {fileID: 0}
     - target: {fileID: 7174342622732605509, guid: 3ceee7b043ec92648b7f30ad3fce68fa, type: 3}
+      propertyPath: Top
+      value: 
+      objectReference: {fileID: 4820137622090950816}
+    - target: {fileID: 7174342622732605509, guid: 3ceee7b043ec92648b7f30ad3fce68fa, type: 3}
       propertyPath: Blossom
       value: 
       objectReference: {fileID: 4820137622090950816}

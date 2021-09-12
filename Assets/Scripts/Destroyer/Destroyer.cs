@@ -1,9 +1,9 @@
 using UnityEngine;
 using Vac.Branch;
 
-namespace Vac.Cutter
+namespace Vac.Destroyer
 {
-    public class Cutter : MonoBehaviour
+    public class Destroyer : MonoBehaviour
     {
         private readonly RaycastHit2D[] _raycastHits = new RaycastHit2D[1];
         private Collider2D _thisCollider;

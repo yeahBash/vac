@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7824201420939041315, guid: c27ac74656a2391479cd4cdef84ad62c, type: 3}
       propertyPath: m_Name
-      value: Cutter
+      value: Destroyer
       objectReference: {fileID: 0}
     - target: {fileID: 7824201420939041319, guid: c27ac74656a2391479cd4cdef84ad62c, type: 3}
       propertyPath: m_RootOrder
@@ -187,6 +187,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 621727715, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1630552971}
+    - target: {fileID: 621727715, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Restart
+      objectReference: {fileID: 0}
+    - target: {fileID: 621727715, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Vac.Core.Core, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 621727715, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4263960271918301392, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
       propertyPath: m_Name
       value: LevelCanvas
@@ -277,6 +293,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+--- !u!114 &1466373387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4263960273404706018, guid: ff165ab4c16c0124cbabe18f0871216e, type: 3}
+  m_PrefabInstance: {fileID: 1466373386}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1630552970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -333,12 +360,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8541c865e9b7ad34abbd5a6fd14d8639, type: 2}
     - target: {fileID: 6633042925738507576, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
+      propertyPath: ScoreText
+      value: 
+      objectReference: {fileID: 1466373387}
+    - target: {fileID: 6633042925738507576, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
       propertyPath: FlowerCount
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6633042925738507579, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
       propertyPath: m_Name
-      value: Platform
+      value: Core
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
+--- !u!114 &1630552971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6633042925738507576, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
+  m_PrefabInstance: {fileID: 1630552970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9d54fedab68704a9b95fb3482e6b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
