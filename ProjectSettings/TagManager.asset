@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Stem
-  - Blossom
-  - Blade
+  - BranchBody
   layers:
   - Default
   - TransparentFX

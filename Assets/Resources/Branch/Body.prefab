@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8646109708249191489}
   - component: {fileID: 7174342622732605509}
   m_Layer: 0
-  m_Name: Stem
-  m_TagString: Stem
+  m_Name: Body
+  m_TagString: BranchBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bbde018a773594bba9fe2d7bc0e284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Blossom: {fileID: 0}
+  Top: {fileID: 0}
   GrowSpeed: 1
   SpriteObj: {fileID: 7381556258252721556}
 --- !u!1 &7381556258252721556

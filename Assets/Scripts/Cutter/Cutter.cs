@@ -1,8 +1,9 @@
 using UnityEngine;
+using Vac.Branch;
 
-namespace CutTheFlowers
+namespace Vac.Cutter
 {
-    public class Blade : MonoBehaviour
+    public class Cutter : MonoBehaviour
     {
         private readonly RaycastHit2D[] _raycastHits = new RaycastHit2D[1];
         private Collider2D _thisCollider;
@@ -21,7 +22,7 @@ namespace CutTheFlowers
             {
                 var raycastHit = _raycastHits[0];
                 var hitObj = raycastHit.transform.gameObject;
-                if (hitObj.CompareTag("Stem")) hitObj.GetComponent<Stem>().Divide(raycastHit.point);
+                if (hitObj.CompareTag("BranchBody")) hitObj.GetComponent<Body>().Divide(raycastHit.point);
             }
         }
     }
