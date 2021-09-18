@@ -11,7 +11,6 @@ namespace Vac.Core
         private float _score;
         public GameObject Branch;
         private List<GameObject> _branches = new List<GameObject>();
-        public int BranchesCount;
         public TextMeshProUGUI ScoreText;
         public float Speed = 1f;
         public bool IsRotateOn = true;
@@ -38,13 +37,17 @@ namespace Vac.Core
                 transform.Rotate(Speed * Vector3.forward * Time.deltaTime);
         }
 
-        public GameObject PlaceBranch(float angle, float size)
+        public Body PlaceBranch(float angle, float size)
         {
-            var branch = Instantiate(Branch, transform.position, Quaternion.Euler(Vector3.forward * angle));
+            var branch = Instantiate(Branch, transform.position, Quaternion.identity);
             branch.transform.SetParent(transform);
-            branch.GetComponentInChildren<Body>().Size = size;
+            var body = branch.GetComponentInChildren<Body>();
+            body.OriginalScale = body.transform.localScale;
+            body.OriginalTopPosition = body.Top.transform.localPosition;
+            body.Size = size;
+            body.AnglePosition = angle;
             _branches.Add(branch);
-            return branch;
+            return body;
         }
 
         private void PlaceBranches(int count, bool isSizeRandom)
@@ -57,11 +60,7 @@ namespace Vac.Core
         {
             foreach (var branch in _branches)
             {
-                #if UNITY_EDITOR
-                    DestroyImmediate(branch);
-                #else
-                    Destroy(branch);
-                #endif
+                Destroy(branch);
             }
 
             _branches.Clear();

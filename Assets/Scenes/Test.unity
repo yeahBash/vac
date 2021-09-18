@@ -364,6 +364,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1466373387}
     - target: {fileID: 6633042925738507576, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
+      propertyPath: IsRotateOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6633042925738507576, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
       propertyPath: FlowerCount
       value: 2
       objectReference: {fileID: 0}

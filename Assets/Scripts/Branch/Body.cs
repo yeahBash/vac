@@ -8,13 +8,31 @@ namespace Vac.Branch
         private Collider2D _thisCollider;
         private SpriteRenderer _thisSpriteRenderer;
         private Core.Core _core;
+        private float _size;
+        private float _anglePosition;
+        public Vector3 OriginalScale;
+        public Vector3 OriginalTopPosition;
         public GameObject Top;
         public float GrowSpeed = 1f;
         public GameObject SpriteObj;
+        public float AnglePosition
+        {
+            get => _anglePosition;
+            set
+            {
+                _anglePosition = value;
+                transform.parent.localRotation = Quaternion.Euler(Vector3.back * _anglePosition);
+            }
+        }
         
         public float Size
         {
-            set => Grow(Vector3.up * value);
+            get => _size;
+            set
+            {
+                _size = value;
+                Grow(_size);
+            }
         }
 
         private void Start()
@@ -22,14 +40,15 @@ namespace Vac.Branch
             _thisCollider = GetComponent<Collider2D>();
             _thisSpriteRenderer = SpriteObj.GetComponent<SpriteRenderer>();
             _core = GetComponentInParent<Core.Core>();
+            OriginalScale = transform.localScale;
+            OriginalTopPosition = Top.transform.localPosition;
         }
 
         private void Update()
         {
             if (Input.GetMouseButton(0) && !_isDivided)
             {
-                var delta = GrowSpeed * Vector3.up * Time.deltaTime;
-                Grow(delta);
+                Size += GrowSpeed * Time.deltaTime;
             }
         }
 
@@ -50,10 +69,10 @@ namespace Vac.Branch
             Destroy(transform.parent.gameObject);
         }
 
-        private void Grow(Vector3 delta)
+        private void Grow(float size)
         {
-            transform.localScale += delta;
-            Top.transform.localPosition += delta;
+            transform.localScale = OriginalScale + size * Vector3.up;
+            Top.transform.localPosition = OriginalTopPosition + size * Vector3.up;
         }
 
         private GameObject CreatePart(Vector2 pos, Vector3 eulerRot, Vector3 scale)
