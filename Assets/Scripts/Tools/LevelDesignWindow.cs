@@ -129,7 +129,7 @@ namespace Vac.Tools
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUIUtility.labelWidth = 40f;
-                body.Size = EditorGUILayout.Slider("Size", body.Size, 0f, 2f);
+                body.Size = EditorGUILayout.Slider("Size", body.Size, 0f, 5f);
                 body.AnglePosition = EditorGUILayout.Slider("Angle", body.AnglePosition, 0f, 360f);
                 EditorGUILayout.EndHorizontal();
             }
