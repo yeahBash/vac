@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Vac.Branch;
+using Vac.Level;
 
 namespace Vac.Core
 {
-    public class Core : MonoBehaviour
+    public class CoreBase : MonoBehaviour
     {
         private const float MAX_START_BRANCH_SIZE = 1f;
         private float _score;
@@ -14,7 +15,7 @@ namespace Vac.Core
         public TextMeshProUGUI ScoreText;
         public float Speed = 1f;
         public bool IsRotateOn = true;
-        public Level.Level Level;
+        public LevelBase LevelBase;
 
         public float Score
         {
@@ -34,14 +35,14 @@ namespace Vac.Core
         private void Update()
         {
             if (IsRotateOn)
-                transform.Rotate(Speed * Vector3.forward * Time.deltaTime);
+                transform.Rotate(Vector3.forward * (Speed * Time.deltaTime));
         }
 
-        public Body PlaceBranch(float angle, float size)
+        public BranchBodyBase PlaceBranch(float angle, float size)
         {
             var branch = Instantiate(Branch, transform.position, Quaternion.identity);
             branch.transform.SetParent(transform);
-            var body = branch.GetComponentInChildren<Body>();
+            var body = branch.GetComponentInChildren<BranchBodyBase>();
             body.OriginalScale = body.transform.localScale;
             body.OriginalTopPosition = body.Top.transform.localPosition;
             body.Size = size;

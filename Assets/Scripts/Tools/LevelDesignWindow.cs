@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Vac.Branch;
+using Vac.Core;
+using Vac.Destroyer;
 
 namespace Vac.Tools
 {
@@ -12,23 +14,23 @@ namespace Vac.Tools
         private bool _isRotateOn;
         private bool _isDestroyerShouldEdit;
         private bool _isCoreShouldEdit;
-        private Destroyer.Destroyer _destroyer;
-        private Core.Core _core;
+        private DestroyerBase _destroyerBase;
+        private CoreBase _coreBase;
         private Vector2? _destroyerPos;
         private Vector2 _scrollPosition;
         public List<BranchParameters> Branches = new List<BranchParameters>();
-        public List<Body> Bodies = new List<Body>();
+        public List<BranchBodyBase> Bodies = new List<BranchBodyBase>();
 
         private bool IsRotateOn
         {
             get => _isRotateOn;
             set
             {
-                if (_core == null)
+                if (_coreBase == null)
                     return;
 
                 _isRotateOn = value;
-                _core.IsRotateOn = _isRotateOn;
+                _coreBase.IsRotateOn = _isRotateOn;
             }
         }
 
@@ -69,16 +71,16 @@ namespace Vac.Tools
 
         private void DestroyerSettings()
         {
-            Initialize(ref _destroyer);
-            EditorGUILayout.BeginFadeGroup(_destroyer == null ? 0f : 1f);
+            Initialize(ref _destroyerBase);
+            EditorGUILayout.BeginFadeGroup(_destroyerBase == null ? 0f : 1f);
 
-            _destroyer = EditorGUILayout.ObjectField("Destroyer", _destroyer, typeof(Destroyer.Destroyer), true, GUILayout.ExpandWidth(true)) as Destroyer.Destroyer;
+            _destroyerBase = EditorGUILayout.ObjectField("Destroyer", _destroyerBase, typeof(Destroyer.DestroyerBase), true, GUILayout.ExpandWidth(true)) as Destroyer.DestroyerBase;
 
-            if (_destroyer != null)
+            if (_destroyerBase != null)
             {
-                if (!_destroyerPos.HasValue) _destroyerPos = _destroyer.gameObject.transform.localPosition;
+                if (!_destroyerPos.HasValue) _destroyerPos = _destroyerBase.gameObject.transform.localPosition;
                 _destroyerPos = EditorGUILayout.Vector2Field("Destroyer Position", _destroyerPos.Value);
-                _destroyer.gameObject.transform.localPosition = _destroyerPos.Value;
+                _destroyerBase.gameObject.transform.localPosition = _destroyerPos.Value;
             }
 
             EditorGUILayout.EndFadeGroup();
@@ -86,12 +88,12 @@ namespace Vac.Tools
 
         private void CoreSettings()
         {
-            Initialize(ref _core);
-            EditorGUILayout.BeginFadeGroup(_core == null ? 0f : 1f);
+            Initialize(ref _coreBase);
+            EditorGUILayout.BeginFadeGroup(_coreBase == null ? 0f : 1f);
 
-            _core = EditorGUILayout.ObjectField("Core", _core, typeof(Core.Core), true, GUILayout.ExpandWidth(true)) as Core.Core;
+            _coreBase = EditorGUILayout.ObjectField("Core", _coreBase, typeof(Core.CoreBase), true, GUILayout.ExpandWidth(true)) as Core.CoreBase;
 
-            if (_core != null)
+            if (_coreBase != null)
             {
                 IsRotateOn = EditorGUILayout.Toggle("Rotate On", IsRotateOn);
 
@@ -113,7 +115,7 @@ namespace Vac.Tools
             if (GUILayout.Button("Place"))
             {
                 ClearAllBranches();
-                foreach (var branch in Branches) Bodies.Add(_core.PlaceBranch(branch.AnglePosition, branch.Size));
+                foreach (var branch in Branches) Bodies.Add(_coreBase.PlaceBranch(branch.AnglePosition, branch.Size));
             }
         }
 
@@ -137,7 +139,7 @@ namespace Vac.Tools
 
         private void ClearAllBranches()
         {
-            _core.Clear();
+            _coreBase.Clear();
             foreach (var body in Bodies.Where(branchesObj => branchesObj != null))
                 Destroy(body.gameObject);
         }

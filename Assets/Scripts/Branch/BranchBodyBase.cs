@@ -1,13 +1,15 @@
+using System;
 using UnityEngine;
+using Vac.Core;
 
 namespace Vac.Branch
 {
-    public class Body : MonoBehaviour
+    public class BranchBodyBase : MonoBehaviour
     {
         private bool _isDivided;
         private Collider2D _thisCollider;
         private SpriteRenderer _thisSpriteRenderer;
-        private Core.Core _core;
+        private CoreBase _coreBase;
         private float _size;
         private float _anglePosition;
         public Vector3 OriginalScale;
@@ -39,7 +41,7 @@ namespace Vac.Branch
         {
             _thisCollider = GetComponent<Collider2D>();
             _thisSpriteRenderer = SpriteObj.GetComponent<SpriteRenderer>();
-            _core = GetComponentInParent<Core.Core>();
+            _coreBase = GetComponentInParent<CoreBase>();
             OriginalScale = transform.localScale;
             OriginalTopPosition = Top.transform.localPosition;
         }
@@ -57,7 +59,7 @@ namespace Vac.Branch
             var dividePoint = SpriteObj.transform.InverseTransformPoint(worldPoint);
             var blossomPos = SpriteObj.transform.InverseTransformPoint(Top.transform.position);
             var res = blossomPos.y - dividePoint.y;
-            _core.Score += res;
+            _coreBase.Score += res;
             CreatePart(dividePoint, Vector3.zero, new Vector3(1f, blossomPos.y - dividePoint.y, 1f));
             CreatePart(dividePoint, Vector3.forward * 180f, new Vector3(1f, dividePoint.y, 1f));
 
@@ -97,7 +99,7 @@ namespace Vac.Branch
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct BranchParameters
     {
         public float Size;

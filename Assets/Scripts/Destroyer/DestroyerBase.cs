@@ -3,7 +3,7 @@ using Vac.Branch;
 
 namespace Vac.Destroyer
 {
-    public class Destroyer : MonoBehaviour
+    public class DestroyerBase : MonoBehaviour
     {
         private readonly RaycastHit2D[] _raycastHits = new RaycastHit2D[1];
         private Collider2D _thisCollider;
@@ -22,7 +22,7 @@ namespace Vac.Destroyer
             {
                 var raycastHit = _raycastHits[0];
                 var hitObj = raycastHit.transform.gameObject;
-                if (hitObj.CompareTag("BranchBody")) hitObj.GetComponent<Body>().Divide(raycastHit.point);
+                if (hitObj.CompareTag("BranchBody")) hitObj.GetComponent<BranchBodyBase>().Divide(raycastHit.point);
             }
         }
     }
