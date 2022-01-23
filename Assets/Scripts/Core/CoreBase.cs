@@ -10,12 +10,14 @@ namespace Vac.Core
     {
         private const float MAX_START_BRANCH_SIZE = 1f;
         private float _score;
+        private float _lastTime;
         public GameObject Branch;
         private List<GameObject> _branches = new List<GameObject>();
         public TextMeshProUGUI ScoreText;
         public float Speed = 1f;
         public bool IsRotateOn = true;
         public LevelBase LevelBase;
+        public SpriteRenderer CoreRenderer;
 
         public float Score
         {
@@ -30,12 +32,21 @@ namespace Vac.Core
         private void Start()
         {
             //PlaceBranches(BranchesCount, true);
+            CoreRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void Update()
         {
             if (IsRotateOn)
                 transform.Rotate(Vector3.forward * (Speed * Time.deltaTime));
+
+            if (Input.GetMouseButton(0))
+            {
+                _lastTime += Time.deltaTime;
+                CoreRenderer.material.SetFloat("_Length", _lastTime);
+            }
+
+
         }
 
         public BranchBodyBase PlaceBranch(float angle, float size)

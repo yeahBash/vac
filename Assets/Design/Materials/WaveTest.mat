@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Binding
-  m_Shader: {fileID: 4800000, guid: 428abeae524cb294ea50a7d247c9457f, type: 3}
-  m_ShaderKeywords: PIXELSNAP_ON
+  m_Name: WaveTest
+  m_Shader: {fileID: 4800000, guid: 85c5474984a096b47b63ff3b96500beb, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - PixelSnap: 1
+    - PixelSnap: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -70,11 +70,13 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _IsRect: 0
+    - _LastTime: 13.63
+    - _Length: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RoundnessCoefficient: 3.83
+    - _RoundnessCoefficient: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
