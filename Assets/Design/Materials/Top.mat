@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Top
   m_Shader: {fileID: 4800000, guid: 428abeae524cb294ea50a7d247c9457f, type: 3}
-  m_ShaderKeywords: PIXELSNAP_ON
+  m_ShaderKeywords: PIXELSNAP_ON _ISRECT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -74,7 +74,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RoundnessCoefficient: 3.38
+    - _RoundnessCoefficient: 2.46
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

@@ -147,10 +147,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2334242725659613232, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2334242725659613232, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
@@ -181,18 +177,6 @@ PrefabInstance:
     - target: {fileID: 2334242725659613388, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 2334242725659613391, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2334242725659613391, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2334242725659613391, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f6a29dac434ba54287b2e2c1c7ed5d3, type: 3}

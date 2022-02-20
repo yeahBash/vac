@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Vac
+namespace Loaders
 {
     public class Loader : MonoBehaviour
     {
