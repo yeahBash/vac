@@ -8,6 +8,8 @@ namespace Arm
         public GameObject Top;
         public float GrowSpeed = 1f;
         public GameObject Base;
+        public bool IsBackground;
+
         private float _anglePosition;
         private bool _isDivided;
 
@@ -49,7 +51,8 @@ namespace Arm
 
         private void Update()
         {
-            if (Input.GetMouseButton(0) && !_isDivided) Size += GrowSpeed * Time.deltaTime;
+            if (Input.GetMouseButton(0) && !_isDivided && !IsBackground)
+                Size += GrowSpeed * Time.deltaTime;
         }
 
         public void Divide(Vector2 worldPoint)

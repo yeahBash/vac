@@ -114,7 +114,7 @@ namespace Editor.Tools
             if (GUILayout.Button("Place"))
             {
                 ClearAllBranches();
-                foreach (var branch in Branches) Bodies.Add(_bodyBase.PlaceBranch(branch.AnglePosition, branch.Size));
+                foreach (var branch in Branches) Bodies.Add(_bodyBase.PlaceBranch(branch.AnglePosition, branch.Size, false));
             }
         }
 

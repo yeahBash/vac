@@ -48,6 +48,7 @@ MonoBehaviour:
   Top: {fileID: 916267198155737138}
   GrowSpeed: 2
   Base: {fileID: 4653183009973672711}
+  IsBackground: 0
 --- !u!1001 &5706775358397453523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,7 +58,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1370840068287873387, guid: 7dccfb186db1f9e48b2c3ca257254a86, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.285425
+      value: 0.37207687
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370840068287873387, guid: 7dccfb186db1f9e48b2c3ca257254a86, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.241
       objectReference: {fileID: 0}
     - target: {fileID: 2134064152830860108, guid: 7dccfb186db1f9e48b2c3ca257254a86, type: 3}
       propertyPath: m_RootOrder
@@ -137,6 +142,14 @@ PrefabInstance:
     - target: {fileID: 3040205779149325424, guid: 50d157d5d6735564196be7e92baaac75, type: 3}
       propertyPath: m_Name
       value: Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 3156421806086585429, guid: 50d157d5d6735564196be7e92baaac75, type: 3}
+      propertyPath: m_Size.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3156421806086585429, guid: 50d157d5d6735564196be7e92baaac75, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 4977678182179091884, guid: 50d157d5d6735564196be7e92baaac75, type: 3}
       propertyPath: m_RootOrder
