@@ -2,14 +2,17 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Laser
   m_Shader: {fileID: 4800000, guid: 39be3f28c5fe2e44eb501ce76fef0537, type: 3}
-  m_ShaderKeywords: _EMISSION _ISRECT_ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _EMISSION
+  - _ISRECT_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -59,6 +62,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - PixelSnap: 0
     - _BumpScale: 1

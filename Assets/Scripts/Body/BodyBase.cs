@@ -7,7 +7,7 @@ namespace Body
     public class BodyBase : MonoBehaviour
     {
         private const float START_BRANCH_SIZE = 2f;
-        private const float MAX_BRANCH_SIZE = 4f;
+        private const float MAX_BRANCH_SIZE = 3f;
         public ArmBase Arm;
 
         public float Speed = 1f;
@@ -16,12 +16,13 @@ namespace Body
 
         public SpriteRenderer BodyRenderer;
         private readonly List<ArmBase> _arms = new List<ArmBase>();
+        private static readonly int SpeedShader = Shader.PropertyToID("_Speed");
 
         private void Start()
         {
             if (!IsBackground) Restart(true);
             BodyRenderer = GetComponent<SpriteRenderer>();
-            BodyRenderer.material.SetFloat("_Length", Random.value);
+            BodyRenderer.material.SetFloat(SpeedShader, Random.value);
         }
 
         private void Update()
@@ -35,7 +36,7 @@ namespace Body
             var arm = Instantiate(Arm).GetComponentInChildren<ArmBase>();
 
             arm.gameObject.transform.SetParent(transform);
-            arm.Size = size;
+            arm.Length = size;
             arm.AnglePosition = angle;
             arm.IsBackground = isBackground;
 
@@ -59,7 +60,8 @@ namespace Body
 
         public void Restart(bool isRandom)
         {
-            for (var i = 0; i < transform.childCount; i++) Destroy(transform.GetChild(i).gameObject);
+            for (var i = 0; i < transform.childCount; i++)
+                Destroy(transform.GetChild(i).gameObject);
             PlaceBranches(isRandom ? (int)(Random.value * 10f) : 5, true);
         }
     }

@@ -130,7 +130,7 @@ namespace Editor.Tools
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUIUtility.labelWidth = 40f;
-                body.Size = EditorGUILayout.Slider("Size", body.Size, 0f, 5f);
+                body.Length = EditorGUILayout.Slider("Size", body.Length, 0f, 5f);
                 body.AnglePosition = EditorGUILayout.Slider("Angle", body.AnglePosition, 0f, 360f);
                 EditorGUILayout.EndHorizontal();
             }

@@ -35,7 +35,10 @@ int _RoundnessCoefficient;
 
 //
 float _IsRect;
-float _Length;
+float _Radius;
+float _Center;
+float _Strength;
+float _Speed;
 
 struct appdata_t
 {
@@ -130,32 +133,29 @@ float custom_rect_alpha(const float2 uv)
 
 float variation(float2 v1, float2 v2, float strength, float speed) {
 	return sin(
-		dot(normalize(v1), normalize(v2)) * strength + _Length * speed
+		dot(normalize(v1), normalize(v2)) * strength + speed
 	) / 100.0;
 }
 
-float paint_circle(float2 uv, float2 center, float rad, float width) {
+float paint_circle(float2 uv, float2 center, float rad) {
 
 	float2 diff = center - uv;
 	float len = length(diff);
 
-
-	len += variation(diff, float2(0.0, 1.0), 4.0, 10.0);
-	len -= variation(diff, float2(1.0, 0.0), 4.0, 10.0);
+	len += variation(diff, float2(0.0, 1.0), _Strength, _Speed);
+	len -= variation(diff, float2(1.0, 0.0), _Strength, _Speed);
 
 	float circle = step(len, rad);
 	return circle;
 }
 
-
 fixed4 SpriteFrag(v2f IN) : SV_Target
 {
-    fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
-	float radius = 0.48;
-	float2 center = 0.5;
+	float2 uv = (IN.texcoord - 0.5) * _Radius + 0.5;
+    fixed4 c = SampleSpriteTexture (uv) * IN.color;
 
 	//paint color circle
-	c.a *= paint_circle(IN.texcoord, center, radius, 0.1);
+	c.a *= paint_circle(IN.texcoord, _Center, _Radius);
 
 	//if (_IsRect > 0)
 	//	c.a *= rounded_rect_alpha(IN.texcoord);

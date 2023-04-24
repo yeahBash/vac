@@ -5,20 +5,22 @@ namespace Arm
 {
     public class ArmBase : MonoBehaviour
     {
-        public GameObject Top;
-        public float GrowSpeed = 1f;
-        public GameObject Base;
+        public TopBase TopPrefab;
+        public GrowingBase GrowingPrefab;
+        public float GrowingPartWidth = 0.1f;
+        public float TopScale = 0.25f;
+
         public bool IsBackground;
+        public float DeadArea = 0.02f;
+        public float GrowSpeed = 1f;
+
+        private GameObject _destroyer;
+        private TopBase _top;
+        private GrowingBase _growing;
 
         private float _anglePosition;
         private bool _isDivided;
-
-        private Vector3 _originalScale;
-        private Vector3 _originalTopPosition;
-
-        private float _size;
-        private Collider2D _thisCollider;
-        private SpriteRenderer _thisSpriteRenderer;
+        private float _length;
 
         public float AnglePosition
         {
@@ -30,73 +32,82 @@ namespace Arm
             }
         }
 
-        public float Size
+        public float Length
         {
-            get => _size;
+            get => _length;
             set
             {
-                _size = value;
-                Grow(_size);
+                _length = value;
+                Grow(_length);
             }
         }
 
         private void Awake()
         {
-            _thisCollider = GetComponent<Collider2D>();
-            _thisSpriteRenderer = Base.GetComponent<SpriteRenderer>();
+            _destroyer = GameObject.FindGameObjectWithTag("Destroyer");
+        }
 
-            _originalScale = Base.transform.localScale;
-            _originalTopPosition = Top.transform.localPosition;
+        private void Start()
+        {
+            _top = Instantiate(TopPrefab, transform, false);
+            _top.Init(TopScale);
+
+            _growing = Instantiate(GrowingPrefab, transform, false);
+            _growing.ChangeWidth(GrowingPartWidth);
         }
 
         private void Update()
         {
-            if (Input.GetMouseButton(0) && !_isDivided && !IsBackground)
-                Size += GrowSpeed * Time.deltaTime;
+            if (_isDivided) return;
+
+            if (Input.GetMouseButton(0) && !IsBackground)
+                Length += GrowSpeed * Time.deltaTime;
+
+            var isCollided = Check(out var point);
+            if (isCollided)
+                Divide(point);
         }
 
         public void Divide(Vector2 worldPoint)
         {
-            var dividePoint = Base.transform.InverseTransformPoint(worldPoint);
-            var blossomPos = Base.transform.InverseTransformPoint(Top.transform.position);
-            var res = blossomPos.y - dividePoint.y;
+            var res = _growing.Length - worldPoint.magnitude;
 
-            CreatePart(dividePoint, Vector3.zero, new Vector3(1f, res, 1f));
-            CreatePart(dividePoint, Vector3.forward * 180f, new Vector3(1f, dividePoint.y, 1f));
+            CreatePart(worldPoint.magnitude, Vector3.zero, res);
+            CreatePart(worldPoint.magnitude, Vector3.forward * 180f, worldPoint.magnitude);
 
             _isDivided = true;
 
-            Destroy(Base);
-            Destroy(_thisCollider);
-
-            Destroy(gameObject);
+            Destroy(_growing.gameObject);
         }
 
-        private void Grow(float size)
+        private bool Check(out Vector2 collisionPoint)
         {
-            Base.transform.localScale = _originalScale + size * Vector3.up;
-            Top.transform.localPosition = _originalTopPosition + size * Vector3.up;
+            var dot = Vector2.Dot(_top.transform.position.normalized, _destroyer.transform.position.normalized);
+
+            if (_growing.Length > _destroyer.transform.position.magnitude && 1f - dot < DeadArea)
+            {
+                collisionPoint = _destroyer.transform.position;
+                return true;
+            }
+
+            collisionPoint = Vector2.zero;
+            return false;
         }
 
-        private GameObject CreatePart(Vector2 pos, Vector3 eulerRot, Vector3 scale)
+        private void Grow(float length)
         {
-            var part = new GameObject("Part", typeof(SpriteRenderer));
+            _growing.Grow(length);
+            _top.SetOffset(length);
+        }
 
-            var spriteRenderer = part.GetComponent<SpriteRenderer>();
-            SetSpriteRenderer(spriteRenderer);
+        private void CreatePart(float divisionPos, Vector3 eulerRot, float length)
+        {
+            var part = Instantiate(GrowingPrefab, transform, false);
 
-            part.transform.SetParent(transform, false);
-            part.transform.localPosition = Vector3.up * pos.y;
+            part.transform.localPosition = Vector3.up * divisionPos;
             part.transform.localRotation = Quaternion.Euler(eulerRot);
-            part.transform.localScale = scale;
-
-            return part;
-        }
-
-        private void SetSpriteRenderer(SpriteRenderer spriteRenderer)
-        {
-            spriteRenderer.sprite = _thisSpriteRenderer.sprite;
-            spriteRenderer.color = _thisSpriteRenderer.color;
+            part.ChangeWidth(GrowingPartWidth);
+            part.ChangeHeight(length);
         }
     }
 
