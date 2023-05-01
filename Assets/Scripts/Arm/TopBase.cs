@@ -7,6 +7,9 @@ namespace Arm
         [SerializeField] private float InitOffset;
         private Vector3 _originalTopPosition;
 
+        private bool _shouldBeMoved;
+        private RectTransform _rectTransform;
+
         public void Init(float scale)
         {
             transform.localPosition = Vector3.up * InitOffset;

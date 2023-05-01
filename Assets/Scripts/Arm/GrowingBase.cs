@@ -9,11 +9,15 @@ namespace Arm
 
         public float Length => _spriteRenderer.size.y;
 
+        private bool _shouldBeMoved;
+        private RectTransform _rectTransform;
+
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _originalSize = _spriteRenderer.size;
         }
+
 
         public void Grow(float length)
         {
