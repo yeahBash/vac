@@ -13,7 +13,7 @@ Shader "CustomSprites/WaveTest"
 		_Radius("Radius", Float) = 0.5
 		_Center("Center", Float) = 0.5
 		_Strength("Strength", Float) = 4.0
-		_Speed("Speed", Float) = 10.0
+		_Offset("Offset", Float) = 10.0
 		[MaterialToggle]_IsRect("IsRect", Float) = 1
         [PerRendererData] _AlphaTex ("External Alpha", 2D) = "white" {}
         [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0

@@ -1,11 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-namespace Vac.Utilities
+namespace Utilities
 {
     public class FPSCounter : MonoBehaviour
     {
-        private const int BORDER_SIZE = 10;
         private int _framesCurrentSecond;
         private int _framesTotal;
         private int _lastRoundTime;
@@ -63,7 +62,7 @@ namespace Vac.Utilities
             DisplayFps();
         }
 
-        public void DisplayFps()
+        private void DisplayFps()
         {
             DisplayText.text = $"FPS: {Fps}\n" +
                                $"AvgFPS: {AvgFps}\n" +

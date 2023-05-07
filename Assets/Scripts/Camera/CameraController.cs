@@ -1,4 +1,4 @@
-using Arm;
+using GameManagement;
 using UnityEngine;
 
 namespace Camera
@@ -6,37 +6,34 @@ namespace Camera
     public class CameraController : MonoBehaviour
     {
         private UnityEngine.Camera _camera;
-        private float _cameraAspect;
         private float _initVerticalSize;
-        private bool _isHorizontalMin;
-        private ArmBase _maxArm;
+        private float VerticalSize => _camera.orthographicSize;
+        private float HorizontalSize => _camera.aspect * VerticalSize;
 
-        private void Start()
+        private void Awake()
         {
-            _camera = GetComponent<UnityEngine.Camera>();
-            _cameraAspect = _camera.aspect;
-
-            var verticalSize = _camera.orthographicSize;
-            var horizontalSize = _cameraAspect * verticalSize;
-            _isHorizontalMin = verticalSize > horizontalSize;
-            _initVerticalSize = verticalSize;
-        }
-
-        private void Update()
-        {
-            if (_maxArm == null)
+            if (FindObjectsOfType<CameraController>().Length > 1)
             {
-                _maxArm = FindObjectOfType<ArmBase>(); // TODO: change
+                Debug.LogError("There are other camera controllers");
                 return;
             }
 
-            if (_maxArm.IsDivided) return;
+            GameManager.Instance.InitCameraController(this);
+            _camera = GetComponent<UnityEngine.Camera>();
+        }
 
-            var verticalSize = _camera.orthographicSize;
-            var minSize = _isHorizontalMin ? _cameraAspect * verticalSize : verticalSize;
-            var targetSize = Mathf.Max(minSize, _maxArm.Top.transform.localPosition.magnitude);
+        private void Start()
+        {
+            _initVerticalSize = VerticalSize;
+        }
+
+        public void ChangeSize(float targetSize)
+        {
+            var isHorizontalMin = VerticalSize > HorizontalSize;
+            var minSize = isHorizontalMin ? HorizontalSize : VerticalSize;
+            var resSize = Mathf.Max(minSize, targetSize);
             _camera.orthographicSize =
-                Mathf.Max(_initVerticalSize, _isHorizontalMin ? targetSize / _cameraAspect : targetSize);
+                Mathf.Max(_initVerticalSize, isHorizontalMin ? resSize / _camera.aspect : resSize);
         }
     }
 }

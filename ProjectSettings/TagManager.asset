@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Arm
   - Destroyer
+  - Branch
+  - Core
   layers:
   - Default
   - TransparentFX

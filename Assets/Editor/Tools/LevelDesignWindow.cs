@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Arm;
-using Body;
+using Branch;
+using Core;
 using Destroyer;
 using UnityEditor;
 using UnityEngine;
@@ -14,22 +14,22 @@ namespace Editor.Tools
         private bool _isDestroyerShouldEdit;
         private bool _isCoreShouldEdit;
         private DestroyerBase _destroyerBase;
-        private BodyBase _bodyBase;
+        private CoreBase _coreBase;
         private Vector2? _destroyerPos;
         private Vector2 _scrollPosition;
-        public List<ArmParameters> Branches = new List<ArmParameters>();
-        public List<ArmBase> Bodies = new List<ArmBase>();
+        public List<BranchBaseParameters> Branches = new List<BranchBaseParameters>();
+        public List<BranchBase> Bodies = new List<BranchBase>();
 
         private bool IsRotateOn
         {
             get => _isRotateOn;
             set
             {
-                if (_bodyBase == null)
+                if (_coreBase == null)
                     return;
 
                 _isRotateOn = value;
-                _bodyBase.IsRotateOn = _isRotateOn;
+                _coreBase.IsRotateOn = _isRotateOn;
             }
         }
 
@@ -87,12 +87,12 @@ namespace Editor.Tools
 
         private void CoreSettings()
         {
-            Initialize(ref _bodyBase);
-            EditorGUILayout.BeginFadeGroup(_bodyBase == null ? 0f : 1f);
+            Initialize(ref _coreBase);
+            EditorGUILayout.BeginFadeGroup(_coreBase == null ? 0f : 1f);
 
-            _bodyBase = EditorGUILayout.ObjectField("Core", _bodyBase, typeof(BodyBase), true, GUILayout.ExpandWidth(true)) as BodyBase;
+            _coreBase = EditorGUILayout.ObjectField("Core", _coreBase, typeof(CoreBase), true, GUILayout.ExpandWidth(true)) as CoreBase;
 
-            if (_bodyBase != null)
+            if (_coreBase != null)
             {
                 IsRotateOn = EditorGUILayout.Toggle("Rotate On", IsRotateOn);
 
@@ -114,7 +114,7 @@ namespace Editor.Tools
             if (GUILayout.Button("Place"))
             {
                 ClearAllBranches();
-                foreach (var branch in Branches) Bodies.Add(_bodyBase.PlaceBranch(branch.AnglePosition, branch.Size, false));
+                Bodies = _coreBase.PlaceBranches(Branches).ToList();
             }
         }
 
@@ -138,7 +138,7 @@ namespace Editor.Tools
 
         private void ClearAllBranches()
         {
-            _bodyBase.Clear();
+            _coreBase.ClearBranches();
             foreach (var body in Bodies.Where(branchesObj => branchesObj != null))
                 Destroy(body.gameObject);
         }

@@ -38,7 +38,7 @@ float _IsRect;
 float _Radius;
 float _Center;
 float _Strength;
-float _Speed;
+float _Offset;
 
 struct appdata_t
 {
@@ -131,9 +131,9 @@ float custom_rect_alpha(const float2 uv)
 	return step(equation_for_roundness, r);
 }
 
-float variation(float2 v1, float2 v2, float strength, float speed) {
+float variation(float2 v1, float2 v2, float strength, float offset) {
 	return sin(
-		dot(normalize(v1), normalize(v2)) * strength + speed
+		dot(normalize(v1), normalize(v2)) * strength + offset
 	) / 100.0;
 }
 
@@ -142,8 +142,8 @@ float paint_circle(float2 uv, float2 center, float rad) {
 	float2 diff = center - uv;
 	float len = length(diff);
 
-	len += variation(diff, float2(0.0, 1.0), _Strength, _Speed);
-	len -= variation(diff, float2(1.0, 0.0), _Strength, _Speed);
+	len += variation(diff, float2(0.0, 1.0), _Strength, _Offset);
+	len -= variation(diff, float2(1.0, 0.0), _Strength, _Offset);
 
 	float circle = step(len, rad);
 	return circle;

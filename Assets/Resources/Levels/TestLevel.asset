@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25abb1af7c6147044b4233d952188c08, type: 3}
   m_Name: TestLevel
   m_EditorClassIdentifier: 
-  Core: {fileID: 0}
+  CorePosition: {x: 0, y: 0}
+  DestroyerPositions:
+  - {x: 0, y: 3.13}
+  RotationSpeed: 1
   Branches:
-  - Body: {fileID: 0}
-    Top: {fileID: 0}
-    Size: 0
+  - Length: 1
     AnglePosition: 0
-  - Body: {fileID: 0}
-    Top: {fileID: 0}
-    Size: 0
-    AnglePosition: 0
+  - Length: 1
+    AnglePosition: 180

@@ -1,4 +1,4 @@
-using Arm;
+using Branch;
 using UnityEngine;
 
 namespace Level
@@ -6,8 +6,9 @@ namespace Level
     [CreateAssetMenu(fileName = "New Level", menuName = "Level")]
     public class LevelBase : ScriptableObject
     {
-        public Vector2 DestroyerPos;
+        public Vector2 CorePosition;
+        public Vector2[] DestroyerPositions;
         public float RotationSpeed;
-        public ArmParameters[] Arms;
+        public BranchBaseParameters[] Branches;
     }
 }
