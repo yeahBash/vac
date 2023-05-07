@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Branch
@@ -12,10 +13,16 @@ namespace Branch
             _growing = GetComponent<GrowingBase>();
         }
 
+        private void Update()
+        {
+            Shrink(Time.deltaTime);
+        }
+
         public void Shrink(float deltaTime)
         {
-            if (_growing.Length >= 0)
-                _growing.ChangeHeight(_growing.Length - deltaTime * ShrinkingSpeed);
+            _growing.ChangeHeight(_growing.Length - deltaTime * ShrinkingSpeed);
+
+            if (_growing.Length < 0) Destroy(gameObject);
         }
     }
 }

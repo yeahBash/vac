@@ -21,6 +21,11 @@ namespace Branch
             gameObject.AddComponent<RectTransform>();
         }
 
+        private void Update()
+        {
+            MoveToUi(Time.deltaTime);
+        }
+
         public void Init(GameObject top)
         {
             var topRectTransform = top.AddComponent<RectTransform>();

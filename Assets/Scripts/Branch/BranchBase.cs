@@ -16,9 +16,7 @@ namespace Branch
 
         private float _anglePosition;
         private GrowingBase _growing;
-        private LeftDividedPart _leftPart;
         private float _length;
-        private ResultDividedPart _resPart;
 
         public float AnglePosition
         {
@@ -53,25 +51,16 @@ namespace Branch
             _growing.ChangeWidth(GrowingPartWidth);
         }
 
-        protected void Update()
-        {
-            if (IsDivided)
-            {
-                _resPart.MoveToUi(Time.deltaTime);
-                _leftPart.Shrink(Time.deltaTime);
-            }
-        }
 
         public void Divide(Vector2 worldPoint, out float res)
         {
             res = _growing.Length - worldPoint.magnitude;
 
             var resPart = CreatePart(worldPoint.magnitude, GrowingPartWidth, res);
-            _resPart = resPart.gameObject.AddComponent<ResultDividedPart>();
-            _resPart.Init(Top.gameObject);
+            resPart.gameObject.AddComponent<ResultDividedPart>().Init(Top.gameObject);
 
             var leftPart = CreatePart(0f, GrowingPartWidth, worldPoint.magnitude);
-            _leftPart = leftPart.gameObject.AddComponent<LeftDividedPart>();
+            leftPart.gameObject.AddComponent<LeftDividedPart>();
 
             IsDivided = true;
 

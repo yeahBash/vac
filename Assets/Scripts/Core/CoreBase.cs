@@ -45,8 +45,11 @@ namespace Core
 
         private void ChangeCameraSettings()
         {
-            var maxTotalLength = Branches.Select(b => b.TotalLength).Max();
-            GameManager.Instance.CameraController.ChangeSize(maxTotalLength);
+            if (Branches.Count > 0)
+            {
+                var maxTotalLength = Branches.Select(b => b.TotalLength).Max();
+                GameManager.Instance.CameraController.ChangeSize(maxTotalLength);
+            }
         }
 
         protected abstract void AffectBranches(float deltaTime);
@@ -55,8 +58,6 @@ namespace Core
         {
             foreach (var branch in Branches)
             {
-                if (branch.IsDivided) continue;
-
                 var isCollided = branch.Check(Destroyer.transform.position, out var collisionPoint);
                 if (isCollided)
                 {
@@ -64,6 +65,8 @@ namespace Core
                     GameManager.Instance.LevelLoader.AddScore(res);
                 }
             }
+
+            Branches.RemoveAll(b => b.IsDivided);
         }
 
         public IEnumerable<BranchBase> PlaceBranches(IEnumerable<BranchBaseParameters> branchParameters)
