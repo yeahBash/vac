@@ -51,13 +51,13 @@ namespace Branch
             _growing.ChangeWidth(GrowingPartWidth);
         }
 
-
         public void Divide(Vector2 worldPoint, out float res)
         {
             res = _growing.Length - worldPoint.magnitude;
 
             var resPart = CreatePart(worldPoint.magnitude, GrowingPartWidth, res);
-            resPart.gameObject.AddComponent<ResultDividedPart>().Init(Top.gameObject);
+            Top.gameObject.transform.SetParent(resPart.transform, true);
+            resPart.gameObject.AddComponent<ResultDividedPart>();
 
             var leftPart = CreatePart(0f, GrowingPartWidth, worldPoint.magnitude);
             leftPart.gameObject.AddComponent<LeftDividedPart>();

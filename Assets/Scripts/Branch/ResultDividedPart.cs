@@ -6,19 +6,25 @@ namespace Branch
 {
     public class ResultDividedPart : MonoBehaviour
     {
-        public float MoveToUiSpeed = 1f;
+        public float MoveToUiSpeed = 1f; // TODO: calculate this
         public float ResPartToIconDiff = 1f;
-        private RectTransform _rectTransform;
-        private RectTransform _targetBranchHolder;
-        private CanvasController _canvas;
+        private RectTransform _holder;
+        private RectTransform _targetHolder;
 
         private void Awake()
         {
             var branchHolderPrefab = Resources.Load<RectTransform>("UI/BranchHolder");
-            _canvas = GameManager.Instance.CanvasController;
-            _targetBranchHolder = Instantiate(branchHolderPrefab, _canvas.gameObject.transform);
+            var canvasController = GameManager.Instance.CanvasController;
+            _targetHolder = Instantiate(branchHolderPrefab, canvasController.gameObject.transform);
 
-            gameObject.AddComponent<RectTransform>();
+            _holder = Instantiate(branchHolderPrefab, canvasController.gameObject.transform);
+            var rectTransform = gameObject.AddComponent<RectTransform>();
+            rectTransform.anchorMax = _holder.anchorMax;
+            rectTransform.anchorMin = _holder.anchorMin;
+            transform.SetParent(canvasController.gameObject.transform, true);
+
+            _holder.anchoredPosition3D = rectTransform.anchoredPosition3D;
+            rectTransform.SetParent(_holder, true);
         }
 
         private void Update()
@@ -26,25 +32,13 @@ namespace Branch
             MoveToUi(Time.deltaTime);
         }
 
-        public void Init(GameObject top)
+        private void MoveToUi(float deltaTime)
         {
-            var topRectTransform = top.AddComponent<RectTransform>();
-            _rectTransform = Instantiate(_targetBranchHolder, _canvas.gameObject.transform);
-            _rectTransform.position = top.transform.position;
+            var target = (_targetHolder.anchoredPosition3D - _holder.anchoredPosition3D).normalized;
+            _holder.Translate(target * (MoveToUiSpeed * deltaTime));
 
-            top.transform.SetParent(_rectTransform, true);
-            transform.SetParent(_rectTransform, true);
-        }
-
-        public void MoveToUi(float deltaTime)
-        {
-            if (_rectTransform == null) return;
-
-            var target = (Vector3.zero - _rectTransform.anchoredPosition3D).normalized;
-            _rectTransform.Translate(target * (MoveToUiSpeed * deltaTime));
-
-            if (_rectTransform.anchoredPosition.magnitude < ResPartToIconDiff)
-                Destroy(_rectTransform.gameObject);
+            if (_holder.anchoredPosition.magnitude < ResPartToIconDiff)
+                Destroy(_holder.gameObject);
         }
     }
 }
