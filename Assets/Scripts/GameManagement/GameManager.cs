@@ -34,6 +34,7 @@ namespace GameManagement
         public void InitCanvasController(CanvasController canvasController)
         {
             CanvasController = canvasController;
+            CanvasController.ToLevelUI(); // TODO: move when there will be more ui screens
         }
 
         private void OnDestroy()

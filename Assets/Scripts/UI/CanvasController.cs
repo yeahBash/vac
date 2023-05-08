@@ -1,13 +1,14 @@
 using GameManagement;
-using TMPro;
+using UI.Screens;
 using UnityEngine;
+using Screen = UI.Screens.Screen;
 
 namespace UI
 {
     public class CanvasController : MonoBehaviour
     {
-        public TextMeshProUGUI ScoreText;
-        private Canvas _canvas;
+        public LevelUI LevelUIPrefab;
+        public Screen CurrentScreen { get; private set; }
 
         private void Awake()
         {
@@ -18,13 +19,21 @@ namespace UI
             }
 
             GameManager.Instance.InitCanvasController(this);
-            _canvas = GetComponent<Canvas>();
         }
 
-        //TODO: change (add event)
-        private void Update()
+        public void ToLevelUI()
         {
-            ScoreText.text = GameManager.Instance.LevelLoader.Score.ToString();
+            ResetUI();
+            CurrentScreen = Instantiate(LevelUIPrefab, transform);
+        }
+
+        private void ResetUI()
+        {
+            if (CurrentScreen != null)
+            {
+                Destroy(CurrentScreen.gameObject);
+                CurrentScreen = null;
+            }
         }
     }
 }

@@ -1,30 +1,26 @@
 using GameManagement;
 using UI;
+using UI.Screens;
 using UnityEngine;
 
 namespace Branch
 {
     public class ResultDividedPart : MonoBehaviour
     {
-        public float MoveToUiSpeed = 1f; // TODO: calculate this
+        public float MoveToUiSpeed = 2f; // TODO: calculate this
         public float ResPartToIconDiff = 1f;
-        private RectTransform _holder;
-        private RectTransform _targetHolder;
+        private CanvasController _canvasController;
+        private RectTransform _targetIcon;
+        private RectTransform _rectTransform;
+        private LevelUI _levelScreen;
 
         private void Awake()
         {
-            var branchHolderPrefab = Resources.Load<RectTransform>("UI/BranchHolder");
-            var canvasController = GameManager.Instance.CanvasController;
-            _targetHolder = Instantiate(branchHolderPrefab, canvasController.gameObject.transform);
+            _canvasController = GameManager.Instance.CanvasController;
+            _levelScreen = _canvasController.CurrentScreen as LevelUI;
+            if (_levelScreen == null) return;
 
-            _holder = Instantiate(branchHolderPrefab, canvasController.gameObject.transform);
-            var rectTransform = gameObject.AddComponent<RectTransform>();
-            rectTransform.anchorMax = _holder.anchorMax;
-            rectTransform.anchorMin = _holder.anchorMin;
-            transform.SetParent(canvasController.gameObject.transform, true);
-
-            _holder.anchoredPosition3D = rectTransform.anchoredPosition3D;
-            rectTransform.SetParent(_holder, true);
+            Init();
         }
 
         private void Update()
@@ -32,13 +28,25 @@ namespace Branch
             MoveToUi(Time.deltaTime);
         }
 
+        private void Init()
+        {
+            _targetIcon = _levelScreen.ScoreIcon.GetComponent<RectTransform>();
+            _rectTransform = gameObject.AddComponent<RectTransform>();
+
+            _rectTransform.anchorMax = _targetIcon.anchorMax;
+            _rectTransform.anchorMin = _targetIcon.anchorMin;
+            _rectTransform.pivot = _targetIcon.pivot;
+
+            _rectTransform.SetParent(_canvasController.gameObject.transform, true);
+        }
+
         private void MoveToUi(float deltaTime)
         {
-            var target = (_targetHolder.anchoredPosition3D - _holder.anchoredPosition3D).normalized;
-            _holder.Translate(target * (MoveToUiSpeed * deltaTime));
+            var targetDir = _targetIcon.anchoredPosition3D - _rectTransform.anchoredPosition3D;
+            _rectTransform.Translate(targetDir.normalized * (MoveToUiSpeed * deltaTime));
 
-            if (_holder.anchoredPosition.magnitude < ResPartToIconDiff)
-                Destroy(_holder.gameObject);
+            if (targetDir.magnitude < ResPartToIconDiff)
+                Destroy(_rectTransform.gameObject);
         }
     }
 }

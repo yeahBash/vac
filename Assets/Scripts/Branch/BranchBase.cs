@@ -12,10 +12,10 @@ namespace Branch
         public float DeadArea = 0.02f;
         public float GrowSpeed = 1f;
 
-        [HideInInspector] public TopBase Top;
+        private TopBase _top;
+        private GrowingBase _growing;
 
         private float _anglePosition;
-        private GrowingBase _growing;
         private float _length;
 
         public float AnglePosition
@@ -38,14 +38,14 @@ namespace Branch
             }
         }
 
-        public float TotalLength => Length + Top.Length;
+        public float TotalLength => Length + _top.Length;
 
         public bool IsDivided { get; private set; }
 
         protected void Awake()
         {
-            Top = Instantiate(TopPrefab, transform, false);
-            Top.Init(TopScale);
+            _top = Instantiate(TopPrefab, transform, false);
+            _top.Init(TopScale);
 
             _growing = Instantiate(GrowingPrefab, transform, false);
             _growing.ChangeWidth(GrowingPartWidth);
@@ -56,7 +56,7 @@ namespace Branch
             res = _growing.Length - worldPoint.magnitude;
 
             var resPart = CreatePart(worldPoint.magnitude, GrowingPartWidth, res);
-            Top.gameObject.transform.SetParent(resPart.transform, true);
+            _top.gameObject.transform.SetParent(resPart.transform, true);
             resPart.gameObject.AddComponent<ResultDividedPart>();
 
             var leftPart = CreatePart(0f, GrowingPartWidth, worldPoint.magnitude);
@@ -69,7 +69,7 @@ namespace Branch
 
         public bool Check(Vector2 pointToCheck, out Vector2 collisionPoint)
         {
-            var dot = Vector2.Dot(Top.transform.position.normalized, pointToCheck.normalized);
+            var dot = Vector2.Dot(_top.transform.position.normalized, pointToCheck.normalized);
             if (_growing.Length > pointToCheck.magnitude && 1f - dot < DeadArea)
             {
                 collisionPoint = pointToCheck;
@@ -83,7 +83,7 @@ namespace Branch
         private void Grow(float length)
         {
             _growing.Grow(length);
-            Top.SetOffset(length);
+            _top.SetOffset(length);
         }
 
         private GrowingBase CreatePart(float divisionPos, float width, float length)

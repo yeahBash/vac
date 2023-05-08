@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CorePosition: {x: 0, y: 0}
   DestroyerPositions:
-  - {x: 0, y: 3.13}
-  RotationSpeed: 1
+  - {x: 0, y: 2}
+  RotationSpeed: 100
   Branches:
   - Length: 1
     AnglePosition: 0
