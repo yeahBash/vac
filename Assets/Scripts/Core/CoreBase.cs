@@ -4,6 +4,7 @@ using Branch;
 using Destroyer;
 using GameManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Core
 {
@@ -19,6 +20,8 @@ namespace Core
         protected readonly List<BranchBase> Branches = new List<BranchBase>();
         protected SpriteRenderer CoreRenderer;
 
+        public Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
+
         protected void Awake()
         {
             CoreRenderer = GetComponent<SpriteRenderer>();
@@ -29,7 +32,7 @@ namespace Core
             if (IsRotateOn)
                 Rotate();
 
-            if (Input.GetMouseButton(0) && !IsBackground)
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && !IsBackground)
             {
                 AffectBranches(Time.deltaTime);
                 ChangeCameraSettings();

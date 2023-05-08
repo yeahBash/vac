@@ -14,5 +14,10 @@ namespace UI.Screens
         {
             ScoreText.text = GameManager.Instance.LevelLoader.Score.ToString();
         }
+
+        public void Restart(bool isRandom)
+        {
+            GameManager.Instance.LevelLoader.Restart(isRandom);
+        }
     }
 }

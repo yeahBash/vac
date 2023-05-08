@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Branch.DividedParts;
 using UnityEngine;
 using Utilities;
@@ -10,6 +12,8 @@ namespace Branch
         public GrowingBase GrowingPrefab;
         public float GrowingPartWidth = 0.1f;
         public float GrowSpeed = 1f;
+
+        private readonly List<GrowingBase> _parts = new List<GrowingBase>(2);
 
         private float _anglePosition;
         private float _length;
@@ -51,7 +55,8 @@ namespace Branch
             collisionPoint = Vector2.zero;
 
             var distance = MathHelper.GetNormal(destroyerPos, GetPointToCheck(), out var projMultiplier).magnitude;
-            if (Growing.Length > destroyerPos.magnitude && distance - GrowingPartWidth / 2f < deadArea && projMultiplier > 0)
+            if (Growing.Length > destroyerPos.magnitude && distance - GrowingPartWidth / 2f < deadArea &&
+                projMultiplier > 0)
             {
                 collisionPoint = destroyerPos;
                 return true;
@@ -87,7 +92,14 @@ namespace Branch
                 if (dividedComponent != null) dividedComponent.OnDestroyed = onDestroyed;
             }
 
+            _parts.Add(part);
             return part;
+        }
+
+        protected void OnDestroy()
+        {
+            foreach (var part in _parts.Where(p => p != null))
+                Destroy(part.gameObject);
         }
     }
 }

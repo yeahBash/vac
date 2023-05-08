@@ -35,5 +35,10 @@ namespace Camera
             _camera.orthographicSize =
                 Mathf.Max(_initVerticalSize, isHorizontalMin ? resSize / _camera.aspect : resSize);
         }
+
+        public void ResetCamera()
+        {
+            _camera.orthographicSize = _initVerticalSize;
+        }
     }
 }
