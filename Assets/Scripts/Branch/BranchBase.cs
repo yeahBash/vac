@@ -1,22 +1,21 @@
+using System;
+using Branch.DividedParts;
 using UnityEngine;
 
 namespace Branch
 {
     public abstract class BranchBase : MonoBehaviour
     {
-        public TopBase TopPrefab;
         public GrowingBase GrowingPrefab;
         public float GrowingPartWidth = 0.1f;
-        public float TopScale = 0.25f;
 
         public float DeadArea = 0.02f;
         public float GrowSpeed = 1f;
 
-        private TopBase _top;
-        private GrowingBase _growing;
-
         private float _anglePosition;
         private float _length;
+
+        protected GrowingBase Growing;
 
         public float AnglePosition
         {
@@ -38,61 +37,39 @@ namespace Branch
             }
         }
 
-        public float TotalLength => Length + _top.Length;
+        public virtual float TotalLength => Length;
 
-        public bool IsDivided { get; private set; }
+        public bool IsDivided { get; protected set; }
 
-        protected void Awake()
+        protected virtual void Awake()
         {
-            _top = Instantiate(TopPrefab, transform, false);
-            _top.Init(TopScale);
-
-            _growing = Instantiate(GrowingPrefab, transform, false);
-            _growing.ChangeWidth(GrowingPartWidth);
+            Growing = Instantiate(GrowingPrefab, transform, false);
+            Growing.ChangeWidth(GrowingPartWidth);
         }
 
-        public void Divide(Vector2 worldPoint, out float res)
+        public abstract bool Check(Vector2 pointToCheck, out Vector2 collisionPoint);
+
+        public abstract void Divide(Vector2 worldPoint);
+
+        protected virtual void Grow(float length)
         {
-            res = _growing.Length - worldPoint.magnitude;
-
-            var resPart = CreatePart(worldPoint.magnitude, GrowingPartWidth, res);
-            _top.gameObject.transform.SetParent(resPart.transform, true);
-            resPart.gameObject.AddComponent<ResultDividedPart>();
-
-            var leftPart = CreatePart(0f, GrowingPartWidth, worldPoint.magnitude);
-            leftPart.gameObject.AddComponent<LeftDividedPart>();
-
-            IsDivided = true;
-
-            Destroy(_growing.gameObject);
+            Growing.Grow(length);
         }
 
-        public bool Check(Vector2 pointToCheck, out Vector2 collisionPoint)
-        {
-            var dot = Vector2.Dot(_top.transform.position.normalized, pointToCheck.normalized);
-            if (_growing.Length > pointToCheck.magnitude && 1f - dot < DeadArea)
-            {
-                collisionPoint = pointToCheck;
-                return true;
-            }
-
-            collisionPoint = Vector2.zero;
-            return false;
-        }
-
-        private void Grow(float length)
-        {
-            _growing.Grow(length);
-            _top.SetOffset(length);
-        }
-
-        private GrowingBase CreatePart(float divisionPos, float width, float length)
+        protected virtual GrowingBase CreatePart(float divisionPos, float width, float length, Action onDestroyed,
+            params Type[] partComponents)
         {
             var part = Instantiate(GrowingPrefab, transform, false);
 
             part.transform.localPosition = Vector3.up * divisionPos;
             part.ChangeWidth(width);
             part.ChangeHeight(length);
+
+            foreach (var partComponent in partComponents)
+            {
+                var dividedComponent = part.gameObject.AddComponent(partComponent) as DividedPartBase;
+                if (dividedComponent != null) dividedComponent.OnDestroyed = onDestroyed;
+            }
 
             return part;
         }

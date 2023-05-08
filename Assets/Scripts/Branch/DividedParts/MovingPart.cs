@@ -3,19 +3,21 @@ using UI;
 using UI.Screens;
 using UnityEngine;
 
-namespace Branch
+namespace Branch.DividedParts
 {
-    public class ResultDividedPart : MonoBehaviour
+    public class MovingPart : DividedPartBase
     {
         public float MoveToUiSpeed = 2f; // TODO: calculate this
         public float ResPartToIconDiff = 1f;
         private CanvasController _canvasController;
-        private RectTransform _targetIcon;
-        private RectTransform _rectTransform;
         private LevelUI _levelScreen;
+        private RectTransform _rectTransform;
+        private RectTransform _targetIcon;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _canvasController = GameManager.Instance.CanvasController;
             _levelScreen = _canvasController.CurrentScreen as LevelUI;
             if (_levelScreen == null) return;
@@ -23,9 +25,9 @@ namespace Branch
             Init();
         }
 
-        private void Update()
+        protected override void DoStep(float deltaTime)
         {
-            MoveToUi(Time.deltaTime);
+            MoveToUi(deltaTime);
         }
 
         private void Init()
@@ -46,7 +48,7 @@ namespace Branch
             _rectTransform.Translate(targetDir.normalized * (MoveToUiSpeed * deltaTime));
 
             if (targetDir.magnitude < ResPartToIconDiff)
-                Destroy(_rectTransform.gameObject);
+                DestroyPart();
         }
     }
 }
