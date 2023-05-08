@@ -52,6 +52,12 @@ namespace GameManagement
 
         public void Restart(bool isRandom)
         {
+            //Load(isRandom ? GetRandomLevel() : TestLevelToLoad);
         }
+
+        //private LevelBase GetRandomLevel()
+        //{
+
+        //}
     }
 }

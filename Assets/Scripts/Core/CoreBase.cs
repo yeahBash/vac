@@ -58,7 +58,7 @@ namespace Core
         {
             foreach (var branch in Branches)
             {
-                var isCollided = branch.Check(Destroyer.transform.position, out var collisionPoint);
+                var isCollided = branch.Check(Destroyer.transform.position, Destroyer.DeadArea, out var collisionPoint);
                 if (isCollided) branch.Divide(collisionPoint);
             }
 

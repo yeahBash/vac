@@ -7,7 +7,7 @@ namespace Branch.DividedParts
 {
     public class MovingPart : DividedPartBase
     {
-        public float MoveToUiSpeed = 2f; // TODO: calculate this
+        public float MoveToUiSpeed = 4f; // TODO: calculate this
         public float ResPartToIconDiff = 1f;
         private CanvasController _canvasController;
         private LevelUI _levelScreen;
@@ -44,8 +44,9 @@ namespace Branch.DividedParts
 
         private void MoveToUi(float deltaTime)
         {
-            var targetDir = _targetIcon.anchoredPosition3D - _rectTransform.anchoredPosition3D;
-            _rectTransform.Translate(targetDir.normalized * (MoveToUiSpeed * deltaTime));
+            var targetDir = _targetIcon.anchoredPosition - _rectTransform.anchoredPosition;
+            _rectTransform.Translate(targetDir.normalized * (MoveToUiSpeed * deltaTime),
+                Space.World); //TODO: do manual calculation
 
             if (targetDir.magnitude < ResPartToIconDiff)
                 DestroyPart();

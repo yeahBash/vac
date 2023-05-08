@@ -1,6 +1,7 @@
 using System;
 using Branch.DividedParts;
 using UnityEngine;
+using Utilities;
 
 namespace Branch
 {
@@ -8,8 +9,6 @@ namespace Branch
     {
         public GrowingBase GrowingPrefab;
         public float GrowingPartWidth = 0.1f;
-
-        public float DeadArea = 0.02f;
         public float GrowSpeed = 1f;
 
         private float _anglePosition;
@@ -47,9 +46,26 @@ namespace Branch
             Growing.ChangeWidth(GrowingPartWidth);
         }
 
-        public abstract bool Check(Vector2 pointToCheck, out Vector2 collisionPoint);
+        public virtual bool Check(Vector2 destroyerPos, float deadArea, out Vector2 collisionPoint)
+        {
+            collisionPoint = Vector2.zero;
+
+            var distance = MathHelper.GetNormal(destroyerPos, GetPointToCheck(), out var projMultiplier).magnitude;
+            if (Growing.Length > destroyerPos.magnitude && distance - GrowingPartWidth / 2f < deadArea && projMultiplier > 0)
+            {
+                collisionPoint = destroyerPos;
+                return true;
+            }
+
+            return false;
+        }
 
         public abstract void Divide(Vector2 worldPoint);
+
+        protected virtual Vector2 GetPointToCheck()
+        {
+            return transform.position + transform.TransformPoint(Vector3.up * Length);
+        }
 
         protected virtual void Grow(float length)
         {

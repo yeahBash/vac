@@ -9,8 +9,8 @@ namespace Variants.Virus
     {
         public TopBase TopPrefab;
         public float TopScale = 0.25f;
-
         private TopBase _top;
+
         public override float TotalLength => Length + _top.Length;
 
         protected override void Awake()
@@ -21,18 +21,9 @@ namespace Variants.Virus
             _top.Init(TopScale);
         }
 
-        public override bool Check(Vector2 pointToCheck, out Vector2 collisionPoint)
+        protected override Vector2 GetPointToCheck()
         {
-            collisionPoint = Vector2.zero;
-
-            var dot = Vector2.Dot(_top.transform.position.normalized, pointToCheck.normalized);
-            if (Growing.Length > pointToCheck.magnitude && 1f - dot < DeadArea)
-            {
-                collisionPoint = pointToCheck;
-                return true;
-            }
-
-            return false;
+            return _top.transform.position;
         }
 
         public override void Divide(Vector2 worldPoint)
@@ -40,7 +31,7 @@ namespace Variants.Virus
             var res = Growing.Length - worldPoint.magnitude;
 
             var resPart = CreatePart(worldPoint.magnitude, GrowingPartWidth, res,
-                () => GameManager.Instance.LevelLoader.AddScore(res), typeof(MovingPart));
+                () => AddScore(res), typeof(MovingPart));
             _top.gameObject.transform.SetParent(resPart.transform, true);
 
             CreatePart(0f, GrowingPartWidth, worldPoint.magnitude, null, typeof(ShrinkingPart));
@@ -48,6 +39,11 @@ namespace Variants.Virus
             IsDivided = true;
 
             Destroy(Growing.gameObject);
+        }
+
+        private void AddScore(float res)
+        {
+            GameManager.Instance.LevelLoader.AddScore(res);
         }
 
         protected override void Grow(float length)
