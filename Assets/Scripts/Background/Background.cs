@@ -41,7 +41,13 @@ namespace Background
             _cores = gameObject.scene.GetRootGameObjects().Select(root => root.GetComponent<CoreBase>())
                 .Where(core => core != null).ToArray();
             foreach (var core in _cores)
+            {
+                var fadePanel = core.GetComponentInChildren<BackgroundFadePanel>();
+                if (fadePanel != null)
+                    Destroy(fadePanel.gameObject);
+
                 Init(core);
+            }
         }
 
         private void Init(CoreBase core)
