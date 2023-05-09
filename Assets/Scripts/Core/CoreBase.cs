@@ -17,8 +17,6 @@ namespace Core
         public bool IsRotateOn = true;
 
         protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
-
-        private bool _isBackground;
         protected SpriteRenderer CoreRenderer;
 
         private Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
@@ -26,6 +24,8 @@ namespace Core
 
         private float MaxTotalRadius =>
             Mathf.Max(Radius, ActiveBranches.Select(b => b.TotalLength).DefaultIfEmpty().Max());
+
+        public bool IsInited { get; private set; }
 
         protected void Awake()
         {
@@ -71,12 +71,15 @@ namespace Core
             GameManager.Instance.CameraController.ChangeSize(targetSize);
         }
 
-        public void Init(IEnumerable<BranchBaseParameters> branchParameters,
+        public void Init(IEnumerable<BranchBaseParameters> branchParameters, DestroyerBase destroyer,
             bool shouldCameraChange, bool isBackground)
         {
+            Destroyer = destroyer;
             PlaceBranches(branchParameters);
             if (shouldCameraChange) ChangeCameraSize(MaxTotalRadius);
             IsBackground = isBackground;
+
+            IsInited = true;
         }
 
         public IEnumerable<BranchBase> PlaceBranches(IEnumerable<BranchBaseParameters> branchParameters)
@@ -103,7 +106,10 @@ namespace Core
             ActiveBranches.Clear();
         }
 
+        //TODO: think about better place
         #region Background
+
+        private bool _isBackground;
 
         private bool IsBackground
         {
@@ -111,20 +117,19 @@ namespace Core
             set
             {
                 _isBackground = value;
-                if (_isBackground) SetFadePanel();
+                var existingMarker = gameObject.GetComponent<BackgroundMarker>();
+
+                if (_isBackground)
+                {
+                    if (existingMarker == null)
+                        existingMarker = gameObject.AddComponent<BackgroundMarker>();
+
+                    existingMarker.SetFadePanel(MaxTotalRadius);
+                } else
+                {
+                    if (existingMarker != null) Destroy(existingMarker);
+                }
             }
-        }
-
-        private void SetFadePanel()
-        {
-            // shouldn't change instructions order
-            var coreRenderers = GetComponentsInChildren<SpriteRenderer>();
-            var resource = Resources.Load<BackgroundFadePanel>("Background/FadePanel");
-            var fadePanel = Instantiate(resource, transform);
-            fadePanel.Init(MaxTotalRadius, transform.localScale.x); // get only x because it must be equal to y
-
-            foreach (var coreRenderer in coreRenderers)
-                coreRenderer.sortingOrder = fadePanel.SortingOrder - 1;
         }
 
         #endregion

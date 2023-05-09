@@ -17,8 +17,8 @@ namespace Editor.Tools
         private CoreBase _coreBase;
         private Vector2? _destroyerPos;
         private Vector2 _scrollPosition;
-        public List<BranchBaseParameters> Branches = new List<BranchBaseParameters>();
-        public List<BranchBase> Bodies = new List<BranchBase>();
+        public List<BranchBaseParameters> BranchesParameters = new List<BranchBaseParameters>();
+        public List<BranchBase> Branches = new List<BranchBase>();
 
         private bool IsRotateOn
         {
@@ -88,6 +88,9 @@ namespace Editor.Tools
         private void CoreSettings()
         {
             Initialize(ref _coreBase);
+            if (!_coreBase.IsInited)
+                _coreBase.Init(BranchesParameters, _destroyerBase, false, false);
+
             EditorGUILayout.BeginFadeGroup(_coreBase == null ? 0f : 1f);
 
             _coreBase = EditorGUILayout.ObjectField("Core", _coreBase, typeof(CoreBase), true, GUILayout.ExpandWidth(true)) as CoreBase;
@@ -97,8 +100,8 @@ namespace Editor.Tools
                 IsRotateOn = EditorGUILayout.Toggle("Rotate On", IsRotateOn);
 
                 var so = new SerializedObject(this);
-                var branchesProperty = so.FindProperty("Branches");
-                EditorGUILayout.PropertyField(branchesProperty, true);
+                var branchesParametersProperty = so.FindProperty("BranchesParameters");
+                EditorGUILayout.PropertyField(branchesParametersProperty, true);
                 so.ApplyModifiedProperties();
 
                 PlaceBranches();
@@ -114,7 +117,7 @@ namespace Editor.Tools
             if (GUILayout.Button("Place"))
             {
                 ClearAllBranches();
-                Bodies = _coreBase.PlaceBranches(Branches).ToList();
+                Branches = _coreBase.PlaceBranches(BranchesParameters).ToList();
             }
         }
 
@@ -126,12 +129,12 @@ namespace Editor.Tools
 
         private void SizeAdjustment()
         {
-            foreach (var body in Bodies.Where(b => b != null))
+            foreach (var core in Branches.Where(b => b != null))
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUIUtility.labelWidth = 40f;
-                body.Length = EditorGUILayout.Slider("Size", body.Length, 0f, 5f);
-                body.AnglePosition = EditorGUILayout.Slider("Angle", body.AnglePosition, 0f, 360f);
+                core.Length = EditorGUILayout.Slider("Length", core.Length, 0f, 1.5f);
+                core.AnglePosition = EditorGUILayout.Slider("Angle", core.AnglePosition, 0f, 359.9f);
                 EditorGUILayout.EndHorizontal();
             }
         }
@@ -139,7 +142,7 @@ namespace Editor.Tools
         private void ClearAllBranches()
         {
             _coreBase.ClearBranches();
-            foreach (var body in Bodies.Where(branchesObj => branchesObj != null))
+            foreach (var body in Branches.Where(branchesObj => branchesObj != null))
                 Destroy(body.gameObject);
         }
     }

@@ -16,7 +16,6 @@ namespace GameManagement
         public const float MAX_BRANCH_LENGTH_COEFFICIENT = 0.9f; // TODO: get from level settings
 
         public LevelBase TestLevelToLoad;
-        public Background.Background TestBackground;
         public CoreBase CorePrefab;
         public DestroyerBase DestroyerPrefab;
 
@@ -25,7 +24,9 @@ namespace GameManagement
 
         private void Awake()
         {
-            GameManager.Instance.InitLevelLoader(this);
+            if (GameManager.Instance != null)
+                GameManager.Instance.InitLevelLoader(this);
+
             DontDestroyOnLoad(gameObject);
         }
 
@@ -38,8 +39,8 @@ namespace GameManagement
 
             var core = Instantiate(CorePrefab, levelToLoad.CorePosition, Quaternion.identity);
             core.RotationSpeed = levelToLoad.RotationSpeed;
-            core.Init(levelToLoad.Branches, true, false);
-            core.Destroyer = destroyers.First(); //TODO: change
+            var destroyer = destroyers.First(); //TODO: change
+            core.Init(levelToLoad.Branches, destroyer, true, false);
 
             CurrentLevel = levelToLoad;
         }

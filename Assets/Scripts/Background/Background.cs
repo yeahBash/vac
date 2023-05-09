@@ -57,7 +57,7 @@ namespace Background
             core.RotationSpeed = MathHelper.GetRandomValue(MinRotationSpeed, MaxRotationSpeed); // TODO: make procedural
             core.Init(
                 LevelLoader.GetRandomBranchParameters(MinBranchesLength * LevelLoader.MAX_BRANCH_LENGTH_COEFFICIENT,
-                    MaxBranchesLength * LevelLoader.MAX_BRANCH_LENGTH_COEFFICIENT, MinBranchesCount, MaxBranchesCount),
+                    MaxBranchesLength * LevelLoader.MAX_BRANCH_LENGTH_COEFFICIENT, MinBranchesCount, MaxBranchesCount), null,
                 false, true);
         }
     }
