@@ -18,8 +18,7 @@ namespace UI
                 return;
             }
 
-            if (GameManager.Instance != null)
-                GameManager.Instance.InitCanvasController(this);
+            GameManager.Instance.InitCanvasController(this);
         }
 
         public void ToLevelUI()

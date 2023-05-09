@@ -88,8 +88,6 @@ namespace Editor.Tools
         private void CoreSettings()
         {
             Initialize(ref _coreBase);
-            if (!_coreBase.IsInited)
-                _coreBase.Init(BranchesParameters, _destroyerBase, false, false);
 
             EditorGUILayout.BeginFadeGroup(_coreBase == null ? 0f : 1f);
 

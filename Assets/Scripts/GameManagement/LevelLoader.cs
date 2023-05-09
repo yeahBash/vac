@@ -24,9 +24,7 @@ namespace GameManagement
 
         private void Awake()
         {
-            if (GameManager.Instance != null)
-                GameManager.Instance.InitLevelLoader(this);
-
+            GameManager.Instance.InitLevelLoader(this);
             DontDestroyOnLoad(gameObject);
         }
 
@@ -68,7 +66,9 @@ namespace GameManagement
         {
             DestroyLevel();
             Load(isRandom ? GetRandomLevel() : TestLevelToLoad);
-            GameManager.Instance.Background.Set();
+
+            var background = GameManager.Instance.Background;
+            if (background != null) background.Set();
         }
 
         private void DestroyLevel()

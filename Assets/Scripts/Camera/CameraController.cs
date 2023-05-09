@@ -18,8 +18,7 @@ namespace Camera
                 return;
             }
 
-            if (GameManager.Instance != null)
-                GameManager.Instance.InitCameraController(this);
+            GameManager.Instance.InitCameraController(this);
 
             _camera = GetComponent<UnityEngine.Camera>();
             _initVerticalSize = VerticalSize;
