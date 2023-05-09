@@ -11,6 +11,8 @@ namespace Background
         public CoreBase CorePrefab;
         public int MinBranchesCount = 1;
         public int MaxBranchesCount = 10;
+        public float MinBranchesLength = 1f;
+        public float MaxBranchesLength = 2f;
         public float MinRotationSpeed = 80f;
         public float MaxRotationSpeed = 110f;
 
@@ -53,7 +55,9 @@ namespace Background
         private void Init(CoreBase core)
         {
             core.RotationSpeed = MathHelper.GetRandomValue(MinRotationSpeed, MaxRotationSpeed); // TODO: make procedural
-            core.Init(LevelLoader.GetRandomBranchParameters(0.5f, 1f, MinBranchesCount, MaxBranchesCount),
+            core.Init(
+                LevelLoader.GetRandomBranchParameters(MinBranchesLength * LevelLoader.MAX_BRANCH_LENGTH_COEFFICIENT,
+                    MaxBranchesLength * LevelLoader.MAX_BRANCH_LENGTH_COEFFICIENT, MinBranchesCount, MaxBranchesCount),
                 false, true);
         }
     }

@@ -8,7 +8,7 @@ namespace Branch.DividedParts
     public class MovingPart : DividedPartBase
     {
         public float MoveToUiSpeed = 4f; // TODO: calculate this
-        public float ResPartToIconDiff = 1f;
+        public float ResPartToIconDiff = 20f;
         private CanvasController _canvasController;
         private LevelUI _levelScreen;
         private RectTransform _rectTransform;

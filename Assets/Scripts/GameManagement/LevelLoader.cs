@@ -13,6 +13,7 @@ namespace GameManagement
     public class LevelLoader : MonoBehaviour
     {
         private const float RESULT_MULTIPLIER = 10f; // TODO: calculate coefficient
+        public const float MAX_BRANCH_LENGTH_COEFFICIENT = 0.9f; // TODO: get from level settings
 
         public LevelBase TestLevelToLoad;
         public Background.Background TestBackground;
@@ -89,12 +90,14 @@ namespace GameManagement
             const int minBranchesCount = 1; // TODO: find a better place
             const int maxBranchesCount = 10; // TODO: find a better place
 
-            randomLevel.Branches = GetRandomBranchParameters(CorePrefab.Radius, destroyerPos.magnitude, minBranchesCount, maxBranchesCount);
+            randomLevel.Branches = GetRandomBranchParameters(CorePrefab.Radius,
+                destroyerPos.magnitude * MAX_BRANCH_LENGTH_COEFFICIENT, minBranchesCount, maxBranchesCount);
 
             return randomLevel;
         }
 
-        public static BranchBaseParameters[] GetRandomBranchParameters(float minLength, float maxLength, int minBranchesCount, int maxBranchesCount)
+        public static BranchBaseParameters[] GetRandomBranchParameters(float minLength, float maxLength,
+            int minBranchesCount, int maxBranchesCount)
         {
             var branchesCount = MathHelper.GetRandomValue(minBranchesCount, maxBranchesCount);
             var branchesParameters = new BranchBaseParameters[branchesCount];
