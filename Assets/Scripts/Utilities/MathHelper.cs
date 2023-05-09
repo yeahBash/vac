@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Utilities
 {
@@ -20,6 +22,16 @@ namespace Utilities
         public static Vector2 GetNormal(Vector2 vector, Vector2 onNormal, out float projectionMultiplier)
         {
             return vector - Project(vector, onNormal, out projectionMultiplier);
+        }
+
+        public static float GetRandomValue(float minValue, float maxValue)
+        {
+            return minValue + Random.value * (maxValue - minValue);
+        }
+
+        public static int GetRandomValue(int minValue, int maxValue)
+        {
+            return (int) Math.Round(GetRandomValue((float)minValue, (float)maxValue));
         }
     }
 }

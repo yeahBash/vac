@@ -8,7 +8,6 @@ namespace Variants.Virus
     public class Spike : BranchBase
     {
         public TopBase TopPrefab;
-        public float TopScale = 0.25f;
         private TopBase _top;
 
         public override float TotalLength => Length + _top.Length;
@@ -16,9 +15,7 @@ namespace Variants.Virus
         protected override void Awake()
         {
             base.Awake();
-
             _top = Instantiate(TopPrefab, transform, false);
-            _top.Init(TopScale);
         }
 
         protected override Vector2 GetPointToCheck()

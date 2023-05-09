@@ -6,7 +6,7 @@ using Destroyer;
 using Level;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
+using Utilities;
 
 namespace GameManagement
 {
@@ -15,6 +15,7 @@ namespace GameManagement
         private const float RESULT_MULTIPLIER = 10f; // TODO: calculate coefficient
 
         public LevelBase TestLevelToLoad;
+        public Background.Background TestBackground;
         public CoreBase CorePrefab;
         public DestroyerBase DestroyerPrefab;
 
@@ -27,11 +28,6 @@ namespace GameManagement
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Start()
-        {
-            if (TestLevelToLoad != null) Load(TestLevelToLoad);
-        }
-
         public void Load(LevelBase levelToLoad)
         {
             ResetLevel();
@@ -41,7 +37,7 @@ namespace GameManagement
 
             var core = Instantiate(CorePrefab, levelToLoad.CorePosition, Quaternion.identity);
             core.RotationSpeed = levelToLoad.RotationSpeed;
-            core.PlaceBranches(levelToLoad.Branches);
+            core.Init(levelToLoad.Branches, true, false);
             core.Destroyer = destroyers.First(); //TODO: change
 
             CurrentLevel = levelToLoad;
@@ -70,6 +66,7 @@ namespace GameManagement
         {
             DestroyLevel();
             Load(isRandom ? GetRandomLevel() : TestLevelToLoad);
+            GameManager.Instance.Background.Set();
         }
 
         private void DestroyLevel()
@@ -88,22 +85,27 @@ namespace GameManagement
             randomLevel.DestroyerPositions = TestLevelToLoad.DestroyerPositions;
             randomLevel.RotationSpeed = TestLevelToLoad.RotationSpeed;
 
-            const int maxBranches = 10; // TODO: find a better place
             var destroyerPos = randomLevel.DestroyerPositions.First(); //TODO: change
+            const int minBranchesCount = 1; // TODO: find a better place
+            const int maxBranchesCount = 10; // TODO: find a better place
 
-            var branchesCount = Mathf.Clamp((int)(Random.value * maxBranches), 1, maxBranches);
+            randomLevel.Branches = GetRandomBranchParameters(CorePrefab.Radius, destroyerPos.magnitude, minBranchesCount, maxBranchesCount);
+
+            return randomLevel;
+        }
+
+        public static BranchBaseParameters[] GetRandomBranchParameters(float minLength, float maxLength, int minBranchesCount, int maxBranchesCount)
+        {
+            var branchesCount = MathHelper.GetRandomValue(minBranchesCount, maxBranchesCount);
             var branchesParameters = new BranchBaseParameters[branchesCount];
             for (var i = 0; i < branchesParameters.Length; i++)
                 branchesParameters[i] = new BranchBaseParameters
                 {
-                    Length = Mathf.Clamp(Random.value * destroyerPos.magnitude, CorePrefab.Size.magnitude / 2f,
-                        destroyerPos.magnitude),
+                    Length = MathHelper.GetRandomValue(minLength, maxLength),
                     AnglePosition = 360f / branchesCount * i
                 };
 
-            randomLevel.Branches = branchesParameters;
-
-            return randomLevel;
+            return branchesParameters;
         }
     }
 }

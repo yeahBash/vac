@@ -192,6 +192,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2560195724839186810, guid: 08eb337e40a9a9148912dcd7cf32bb93, type: 3}
     - target: {fileID: 8721263655791081021, guid: c21ccdebfea11d640aba0a691f9a0304, type: 3}
+      propertyPath: TestBackground
+      value: 
+      objectReference: {fileID: 2087038694440631476, guid: 6e59e67c0eedbea41b02e8f25a8731df, type: 3}
+    - target: {fileID: 8721263655791081021, guid: c21ccdebfea11d640aba0a691f9a0304, type: 3}
       propertyPath: DestroyerPrefab
       value: 
       objectReference: {fileID: 4989791698454017325, guid: 404ef4e56190f9e4c819311011ad11b0, type: 3}

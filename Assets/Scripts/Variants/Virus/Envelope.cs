@@ -19,7 +19,7 @@ namespace Variants.Virus
 
         protected override void AffectBranches(float deltaTime)
         {
-            foreach (var branch in Branches)
+            foreach (var branch in ActiveBranches)
                 branch.Length += branch.GrowSpeed * deltaTime;
         }
     }

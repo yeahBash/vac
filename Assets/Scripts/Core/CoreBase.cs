@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Background;
 using Branch;
 using Destroyer;
 using GameManagement;
@@ -15,12 +16,16 @@ namespace Core
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
 
-        public bool IsBackground;
+        protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
 
-        protected readonly List<BranchBase> Branches = new List<BranchBase>();
+        private bool _isBackground;
         protected SpriteRenderer CoreRenderer;
 
-        public Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
+        private Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
+        public float Radius => Size.magnitude / 2f;
+
+        private float MaxTotalRadius =>
+            Mathf.Max(Radius, ActiveBranches.Select(b => b.TotalLength).DefaultIfEmpty().Max());
 
         protected void Awake()
         {
@@ -32,10 +37,12 @@ namespace Core
             if (IsRotateOn)
                 Rotate();
 
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && !IsBackground)
+            if (IsBackground) return;
+
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 AffectBranches(Time.deltaTime);
-                ChangeCameraSettings();
+                ChangeCameraSize(MaxTotalRadius);
             }
 
             CheckBranches();
@@ -46,34 +53,39 @@ namespace Core
             transform.Rotate(Vector3.forward * (RotationSpeed * Time.deltaTime));
         }
 
-        private void ChangeCameraSettings()
-        {
-            if (Branches.Count > 0)
-            {
-                var maxTotalLength = Branches.Select(b => b.TotalLength).Max();
-                GameManager.Instance.CameraController.ChangeSize(maxTotalLength);
-            }
-        }
-
         protected abstract void AffectBranches(float deltaTime);
 
         private void CheckBranches()
         {
-            foreach (var branch in Branches)
+            foreach (var branch in ActiveBranches)
             {
                 var isCollided = branch.Check(Destroyer.transform.position, Destroyer.DeadArea, out var collisionPoint);
                 if (isCollided) branch.Divide(collisionPoint);
             }
 
-            Branches.RemoveAll(b => b.IsDivided);
+            ActiveBranches.RemoveAll(b => b.IsDivided);
+        }
+
+        private static void ChangeCameraSize(float targetSize)
+        {
+            GameManager.Instance.CameraController.ChangeSize(targetSize);
+        }
+
+        public void Init(IEnumerable<BranchBaseParameters> branchParameters,
+            bool shouldCameraChange, bool isBackground)
+        {
+            PlaceBranches(branchParameters);
+            if (shouldCameraChange) ChangeCameraSize(MaxTotalRadius);
+            IsBackground = isBackground;
         }
 
         public IEnumerable<BranchBase> PlaceBranches(IEnumerable<BranchBaseParameters> branchParameters)
         {
+            ClearBranches();
             foreach (var p in branchParameters)
-                Branches.Add(PlaceBranch(p.AnglePosition, p.Length));
+                ActiveBranches.Add(PlaceBranch(p.AnglePosition, p.Length));
 
-            return Branches;
+            return ActiveBranches;
         }
 
         private BranchBase PlaceBranch(float angle, float length)
@@ -87,8 +99,34 @@ namespace Core
 
         public void ClearBranches()
         {
-            foreach (var branch in Branches) Destroy(branch.gameObject);
-            Branches.Clear();
+            foreach (var branch in ActiveBranches) Destroy(branch.gameObject);
+            ActiveBranches.Clear();
         }
+
+        #region Background
+
+        private bool IsBackground
+        {
+            get => _isBackground;
+            set
+            {
+                _isBackground = value;
+                if (_isBackground) SetFadePanel();
+            }
+        }
+
+        private void SetFadePanel()
+        {
+            // shouldn't change instructions order
+            var coreRenderers = GetComponentsInChildren<SpriteRenderer>();
+            var resource = Resources.Load<BackgroundFadePanel>("Background/FadePanel");
+            var fadePanel = Instantiate(resource, transform);
+            fadePanel.Init(MaxTotalRadius, transform.localScale.x); // get only x because it must be equal to y
+
+            foreach (var coreRenderer in coreRenderers)
+                coreRenderer.sortingOrder = fadePanel.SortingOrder - 1;
+        }
+
+        #endregion
     }
 }
