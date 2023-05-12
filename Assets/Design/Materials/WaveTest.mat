@@ -78,6 +78,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Offset: 10
     - _Parallax: 0.02
     - _Radius: 0.48
     - _RoundnessCoefficient: 6.63

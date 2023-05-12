@@ -101,3 +101,4 @@ MonoBehaviour:
   Destroyer: {fileID: 0}
   RotationSpeed: 1
   IsRotateOn: 1
+  OffsetPerFrame: 0.08

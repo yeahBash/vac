@@ -32,7 +32,7 @@ namespace Core
             CoreRenderer = GetComponent<SpriteRenderer>();
         }
 
-        protected void Update()
+        protected virtual void Update()
         {
             if (IsRotateOn)
                 Rotate();
