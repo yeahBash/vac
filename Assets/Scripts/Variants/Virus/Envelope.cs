@@ -13,7 +13,8 @@ namespace Variants.Virus
         {
             base.Update();
 
-            if (Input.GetMouseButton(0)) ChangeShape();
+            if (Input.GetMouseButton(0)) // TODO: fix for mobile devices
+                ChangeShape();
         }
 
         private void ChangeShape(float offset)
