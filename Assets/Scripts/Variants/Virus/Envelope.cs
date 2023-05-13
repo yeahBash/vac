@@ -7,7 +7,7 @@ namespace Variants.Virus
     {
         private static readonly int OffsetProperty = Shader.PropertyToID("_Offset");
 
-        public float OffsetPerFrame = 0.1f;
+        public float OffsetPerSec = 10f;
 
         protected override void Update()
         {
@@ -24,7 +24,7 @@ namespace Variants.Virus
         private void ChangeShape()
         {
             var current = CoreRenderer.material.GetFloat(OffsetProperty);
-            ChangeShape(current + OffsetPerFrame);
+            ChangeShape(current + OffsetPerSec * Time.deltaTime);
         }
 
         protected override void AffectBranches(float deltaTime)
