@@ -16,7 +16,7 @@ namespace Core
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
 
-        protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
+        protected List<BranchBase> ActiveBranches { get; } = new List<BranchBase>();
         protected SpriteRenderer CoreRenderer;
 
         private Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
@@ -25,7 +25,9 @@ namespace Core
         private float MaxTotalRadius =>
             Mathf.Max(Radius, ActiveBranches.Select(b => b.TotalLength).DefaultIfEmpty().Max());
 
-        public bool IsInited { get; private set; }
+        private bool IsInited { get; set; }
+
+        public bool AreBranchesOver => ActiveBranches.Count == 0; //TODO: this should consider parts
 
         protected void Awake()
         {
@@ -39,7 +41,7 @@ namespace Core
 
             if (IsBackground) return;
 
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) // TODO: fix for mobile devices
             {
                 AffectBranches(Time.deltaTime);
                 ChangeCameraSize(MaxTotalRadius);

@@ -21,6 +21,7 @@ namespace GameManagement
 
         public int Score { get; private set; } //TODO: move
         public LevelBase CurrentLevel { get; private set; }
+        private CoreBase _core;
 
         private void Awake()
         {
@@ -35,10 +36,10 @@ namespace GameManagement
             var destroyers = levelToLoad.DestroyerPositions.Select(destroyerPos =>
                 Instantiate(DestroyerPrefab, destroyerPos, Quaternion.identity));
 
-            var core = Instantiate(CorePrefab, levelToLoad.CorePosition, Quaternion.identity);
-            core.RotationSpeed = levelToLoad.RotationSpeed;
+            _core = Instantiate(CorePrefab, levelToLoad.CorePosition, Quaternion.identity);
+            _core.RotationSpeed = levelToLoad.RotationSpeed;
             var destroyer = destroyers.First(); //TODO: change
-            core.Init(levelToLoad.Branches, destroyer, true, false);
+            _core.Init(levelToLoad.Branches, destroyer, true, false);
 
             CurrentLevel = levelToLoad;
         }
@@ -57,9 +58,10 @@ namespace GameManagement
             AddScore((int)Math.Round(result * RESULT_MULTIPLIER));
         }
 
-        public void AddScore(int result)
+        private void AddScore(int result)
         {
             Score += result;
+            if (_core.AreBranchesOver) Restart(true); // TODO: only for test
         }
 
         public void Restart(bool isRandom)
