@@ -56,7 +56,7 @@ namespace Branch
 
             var distance = MathHelper.GetNormal(destroyerPos, GetPointToCheck(), out var projMultiplier).magnitude;
             if (Growing.Length > destroyerPos.magnitude && distance - GrowingPartWidth / 2f < deadArea &&
-                projMultiplier > 0)
+                projMultiplier > 0) // TODO: add condition for low frame rate case
             {
                 collisionPoint = destroyerPos;
                 return true;
