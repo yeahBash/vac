@@ -5,7 +5,7 @@ using Branch;
 using Destroyer;
 using GameManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Core
 {
@@ -27,6 +27,8 @@ namespace Core
 
         public bool IsInited { get; private set; }
 
+        protected bool IsUserInputHold;
+
         protected void Awake()
         {
             CoreRenderer = GetComponent<SpriteRenderer>();
@@ -36,24 +38,16 @@ namespace Core
         {
             if (IsRotateOn)
                 Rotate();
-
+            
             if (IsBackground) return;
 
-            ProcessInput();
-            CheckBranches();
-        }
-
-        private void ProcessInput()
-        {
-            if (!(Input.touchCount > 0)) return;
-
-            var touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Stationary &&
-                !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+            if (IsUserInputHold)
             {
                 AffectBranches(Time.deltaTime);
                 ChangeCameraSize(MaxTotalRadius);
             }
+
+            CheckBranches();
         }
 
         private void Rotate()
@@ -138,6 +132,20 @@ namespace Core
                     if (existingMarker != null) Destroy(existingMarker);
                 }
             }
+        }
+
+        #endregion
+
+        #region Button Handlers
+
+        public void ProcessHold(InputAction.CallbackContext ctx)
+        {
+            if (IsBackground) return;
+
+            if (ctx.performed)
+                IsUserInputHold = true;
+            else if (ctx.canceled)
+                IsUserInputHold = false;
         }
 
         #endregion

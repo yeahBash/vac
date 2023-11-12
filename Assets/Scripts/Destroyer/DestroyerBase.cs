@@ -1,34 +1,33 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Destroyer
 {
     public abstract class DestroyerBase : MonoBehaviour
     {
-        // TODO: calculate target vector based on core pos
-        public Vector2 Target = Vector2.up;
+        public Vector2 MoveVector = -Vector2.up;
         public float Speed = 1f;
         public float DeadArea = 0.1f;
         public int MoveCount = 2;
 
         private int _currentMoveCount;
+
+        // TODO: calculate target vector based on core pos
+        private Vector2 _target;
         private Vector2 _origin;
 
         private void Awake()
         {
             _origin = transform.position;
+            _target = _origin + MoveVector;
         }
 
         private void Update()
         {
-            if (_currentMoveCount != 0)
-            {
-                var curTarget = (_currentMoveCount - MoveCount) % 2 == 0 ? Target : _origin;
-                MoveToTarget(curTarget, Speed, Time.deltaTime);
-                return;
-            }
+            if (_currentMoveCount == 0) return;
 
-            ProcessInput();
+            var curTarget = (_currentMoveCount - MoveCount) % 2 == 0 ? _target : _origin;
+            MoveToTarget(curTarget, Speed, Time.deltaTime);
         }
 
         private void OnDrawGizmos()
@@ -45,15 +44,14 @@ namespace Destroyer
             else _currentMoveCount--;
         }
 
-        private void ProcessInput()
-        {
-            if (!(Input.touchCount > 0)) return;
+        #region Button Handlers
 
-            var touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Moved &&
-                !EventSystem.current.IsPointerOverGameObject(touch.fingerId) &&
-                _currentMoveCount == 0)
-                _currentMoveCount = MoveCount;
+        public void Move(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed) return;
+            if (_currentMoveCount == 0) _currentMoveCount = MoveCount;
         }
+
+        #endregion
     }
 }

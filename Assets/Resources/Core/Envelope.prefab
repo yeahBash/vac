@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6633042925738507526}
   - component: {fileID: 6633042925738507577}
   - component: {fileID: 2560195724839186810}
+  - component: {fileID: 5893904849378990503}
   m_Layer: 0
   m_Name: Envelope
   m_TagString: Untagged
@@ -102,3 +103,53 @@ MonoBehaviour:
   RotationSpeed: 1
   IsRotateOn: 1
   OffsetPerSec: 10
+--- !u!114 &5893904849378990503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633042925738507579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 326d580303a4a0d47af86d81a7acd797, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a8665dfa-758c-47a0-b1df-5bd78c3c9873
+    m_ActionName: Player/PrimaryTap[/Device Simulator Touchscreen/primaryTouch/tap]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2560195724839186810}
+        m_TargetAssemblyTypeName: Core.CoreBase, Assembly-CSharp
+        m_MethodName: ProcessHold
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 79901b01-0ebe-4a53-8e16-d81c0a0a2971
+    m_ActionName: Player/PrimaryHold[/Device Simulator Touchscreen/primaryTouch/press]
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
