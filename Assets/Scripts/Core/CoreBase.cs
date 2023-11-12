@@ -39,13 +39,21 @@ namespace Core
 
             if (IsBackground) return;
 
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            ProcessInput();
+            CheckBranches();
+        }
+
+        private void ProcessInput()
+        {
+            if (!(Input.touchCount > 0)) return;
+
+            var touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Stationary &&
+                !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             {
                 AffectBranches(Time.deltaTime);
                 ChangeCameraSize(MaxTotalRadius);
             }
-
-            CheckBranches();
         }
 
         private void Rotate()
