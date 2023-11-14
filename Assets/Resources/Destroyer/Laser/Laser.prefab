@@ -98,7 +98,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2403a8b18bbea46a3c41e3ee89b7ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveVector: {x: -0, y: -1}
+  Speed: 5
   DeadArea: 0.07
+  MoveCount: 2
+  TapAction:
+    m_Name: Tap
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: c7fdb057-e295-4d26-880a-3a34d2b12190
+    m_Processors: 
+    m_Interactions: Tap
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3a9cbcf7-c6ec-423a-9ed8-3eabe4307777
+      m_Path: <Touchscreen>/primaryTouch/press
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Tap
+      m_Flags: 0
+    m_Flags: 0
+  MoveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 1aa80cdf-b318-4665-9891-4e2ec7a1365f
+    m_Processors: 
+    m_Interactions: Tap
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 97d321c2-6746-4e79-b8ee-859bfea58a5e
+      m_Path: <Touchscreen>/primaryTouch/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &8127838561219279646
 PrefabInstance:
   m_ObjectHideFlags: 0

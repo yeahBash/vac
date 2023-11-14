@@ -101,4 +101,21 @@ MonoBehaviour:
   Destroyer: {fileID: 0}
   RotationSpeed: 1
   IsRotateOn: 1
+  HoldAction:
+    m_Name: Hold
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: ff57d171-917d-4d18-a94b-20a079e84e9a
+    m_Processors: 
+    m_Interactions: Hold
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 0b085f3a-0d4e-4976-bc2d-8f6291a56272
+      m_Path: <Touchscreen>/primaryTouch/press
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Hold
+      m_Flags: 0
+    m_Flags: 0
   OffsetPerSec: 10

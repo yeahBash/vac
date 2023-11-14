@@ -5,7 +5,7 @@ using Branch;
 using Destroyer;
 using GameManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Core
 {
@@ -15,6 +15,7 @@ namespace Core
         [HideInInspector] public DestroyerBase Destroyer; // TODO: temporary here, find better place
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
+        public InputAction HoldAction;
 
         protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
         protected SpriteRenderer CoreRenderer;
@@ -27,19 +28,30 @@ namespace Core
 
         public bool IsInited { get; private set; }
 
+        protected bool IsUserInputHold;
+
         protected void Awake()
         {
             CoreRenderer = GetComponent<SpriteRenderer>();
+
+            if (IsBackground) return;
+            ActivateInput();
+        }
+
+        private void OnDestroy()
+        {
+            if (IsBackground) return;
+            DeactivateInput();
         }
 
         protected virtual void Update()
         {
             if (IsRotateOn)
                 Rotate();
-
+            
             if (IsBackground) return;
 
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (IsUserInputHold)
             {
                 AffectBranches(Time.deltaTime);
                 ChangeCameraSize(MaxTotalRadius);
@@ -130,6 +142,33 @@ namespace Core
                     if (existingMarker != null) Destroy(existingMarker);
                 }
             }
+        }
+
+        #endregion
+
+        #region Input Methods
+
+        private void ActivateInput()
+        {
+            HoldAction.Enable();
+            HoldAction.performed += HoldOn;
+            HoldAction.canceled += HoldOff;
+        }
+        private void DeactivateInput()
+        {
+            HoldAction.performed -= HoldOn;
+            HoldAction.canceled -= HoldOff;
+            HoldAction.Disable();
+        }
+
+        private void HoldOn(InputAction.CallbackContext ctx)
+        {
+            IsUserInputHold = true;
+        }
+
+        private void HoldOff(InputAction.CallbackContext ctx)
+        {
+            IsUserInputHold = false;
         }
 
         #endregion

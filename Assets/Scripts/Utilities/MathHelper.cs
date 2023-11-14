@@ -33,5 +33,18 @@ namespace Utilities
         {
             return (int) Math.Round(GetRandomValue((float)minValue, (float)maxValue));
         }
+
+        public static Vector2 MoveTowards(Vector2 curPos, Vector2 target, float speed, float deltaTime)
+        {
+            var moveVector = target - curPos;
+            var step = moveVector.normalized * (speed * deltaTime);
+            var newPos = curPos + step;
+            var newMoveVector = target - newPos;
+
+            if (Vector2.Dot(moveVector, newMoveVector) <= 0f)
+                newPos = target;
+
+            return newPos;
+        }
     }
 }
