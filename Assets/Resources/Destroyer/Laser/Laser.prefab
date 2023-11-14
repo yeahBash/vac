@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3223804192710752419}
   - component: {fileID: 3223804192710752418}
   - component: {fileID: 4989791698454017325}
-  - component: {fileID: 2773279914603317392}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Destroyer
@@ -103,56 +102,40 @@ MonoBehaviour:
   Speed: 5
   DeadArea: 0.07
   MoveCount: 2
---- !u!114 &2773279914603317392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3223804192710752417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 326d580303a4a0d47af86d81a7acd797, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4989791698454017325}
-        m_TargetAssemblyTypeName: Destroyer.DestroyerBase, Assembly-CSharp
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a8665dfa-758c-47a0-b1df-5bd78c3c9873
-    m_ActionName: Player/PrimaryTap[/Device Simulator Touchscreen/primaryTouch/tap]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8031a699-c2e0-4756-8483-21ceccb8e153
-    m_ActionName: Player/PrimaryHold[/Device Simulator Touchscreen/primaryTouch/tap]
-  m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  TapAction:
+    m_Name: Tap
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: c7fdb057-e295-4d26-880a-3a34d2b12190
+    m_Processors: 
+    m_Interactions: Tap
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3a9cbcf7-c6ec-423a-9ed8-3eabe4307777
+      m_Path: <Touchscreen>/primaryTouch/press
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Tap
+      m_Flags: 0
+    m_Flags: 0
+  MoveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 1aa80cdf-b318-4665-9891-4e2ec7a1365f
+    m_Processors: 
+    m_Interactions: Tap
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 97d321c2-6746-4e79-b8ee-859bfea58a5e
+      m_Path: <Touchscreen>/primaryTouch/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &8127838561219279646
 PrefabInstance:
   m_ObjectHideFlags: 0

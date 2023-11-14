@@ -9,6 +9,8 @@ namespace Destroyer
         public float Speed = 1f;
         public float DeadArea = 0.1f;
         public int MoveCount = 2;
+        public InputAction TapAction;
+        public InputAction SwipeAction;
 
         private int _currentMoveCount;
 
@@ -16,10 +18,19 @@ namespace Destroyer
         private Vector2 _target;
         private Vector2 _origin;
 
+        private bool _userInputPerformed;
+
         private void Awake()
         {
+            ActivateInput();
+
             _origin = transform.position;
             _target = _origin + MoveVector;
+        }
+
+        private void OnDestroy()
+        {
+            DeactivateInput();
         }
 
         private void Update()
@@ -44,12 +55,32 @@ namespace Destroyer
             else _currentMoveCount--;
         }
 
-        #region Button Handlers
-
-        public void Move(InputAction.CallbackContext ctx)
+        private void Move()
         {
-            if (!ctx.performed) return;
-            if (_currentMoveCount == 0) _currentMoveCount = MoveCount;
+            if (_currentMoveCount == 0)
+                _currentMoveCount = MoveCount;
+        }
+
+        #region Input Methods
+        private void ActivateInput()
+        {
+            TapAction.Enable();
+            TapAction.performed += Move;
+            SwipeAction.Enable();
+            SwipeAction.performed += Move;
+        }
+
+        private void DeactivateInput()
+        {
+            TapAction.performed -= Move;
+            TapAction.Disable();
+            SwipeAction.performed -= Move;
+            SwipeAction.Disable();
+        }
+
+        private void Move(InputAction.CallbackContext ctx)
+        {
+            Move();
         }
 
         #endregion

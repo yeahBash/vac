@@ -15,6 +15,7 @@ namespace Core
         [HideInInspector] public DestroyerBase Destroyer; // TODO: temporary here, find better place
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
+        public InputAction HoldAction;
 
         protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
         protected SpriteRenderer CoreRenderer;
@@ -32,6 +33,15 @@ namespace Core
         protected void Awake()
         {
             CoreRenderer = GetComponent<SpriteRenderer>();
+
+            if (IsBackground) return;
+            ActivateInput();
+        }
+
+        private void OnDestroy()
+        {
+            if (IsBackground) return;
+            DeactivateInput();
         }
 
         protected virtual void Update()
@@ -136,16 +146,29 @@ namespace Core
 
         #endregion
 
-        #region Button Handlers
+        #region Input Methods
 
-        public void ProcessHold(InputAction.CallbackContext ctx)
+        private void ActivateInput()
         {
-            if (IsBackground) return;
+            HoldAction.Enable();
+            HoldAction.performed += HoldOn;
+            HoldAction.canceled += HoldOff;
+        }
+        private void DeactivateInput()
+        {
+            HoldAction.performed -= HoldOn;
+            HoldAction.canceled -= HoldOff;
+            HoldAction.Disable();
+        }
 
-            if (ctx.performed)
-                IsUserInputHold = true;
-            else if (ctx.canceled)
-                IsUserInputHold = false;
+        private void HoldOn(InputAction.CallbackContext ctx)
+        {
+            IsUserInputHold = true;
+        }
+
+        private void HoldOff(InputAction.CallbackContext ctx)
+        {
+            IsUserInputHold = false;
         }
 
         #endregion
