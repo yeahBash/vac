@@ -18,7 +18,8 @@ namespace Background
 
         private CoreBase[] _cores; // TODO: make procedural
 
-        private void Awake()
+        //TODO: move to Awake
+        private void Start()
         {
             if (FindObjectsOfType<Background>().Length > 1)
             {

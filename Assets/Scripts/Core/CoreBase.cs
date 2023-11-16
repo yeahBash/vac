@@ -6,6 +6,7 @@ using Destroyer;
 using GameManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 
 namespace Core
 {
@@ -16,8 +17,11 @@ namespace Core
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
         public InputAction HoldAction;
+        private bool _isInited;
+        private ObjectPool<BranchBase> _branchesPool;
 
-        protected readonly List<BranchBase> ActiveBranches = new List<BranchBase>();
+        protected readonly List<BranchBase> ActiveBranches = new();
+        protected bool IsUserInputHold;
         protected SpriteRenderer CoreRenderer;
 
         private Vector2 Size => CoreRenderer != null ? CoreRenderer.size : GetComponent<SpriteRenderer>().size;
@@ -25,13 +29,10 @@ namespace Core
 
         private float MaxTotalRadius =>
             Mathf.Max(Radius, ActiveBranches.Select(b => b.TotalLength).DefaultIfEmpty().Max());
-
-        public bool IsInited { get; private set; }
-
-        protected bool IsUserInputHold;
-
+        
         protected void Awake()
         {
+            _branchesPool = new ObjectPool<BranchBase>(InstantiateBranch, OnGetBranchFromPool, OnReleaseBranchToPool);
             CoreRenderer = GetComponent<SpriteRenderer>();
 
             if (IsBackground) return;
@@ -40,6 +41,7 @@ namespace Core
 
         private void OnDestroy()
         {
+            _branchesPool.Dispose();
             if (IsBackground) return;
             DeactivateInput();
         }
@@ -88,10 +90,11 @@ namespace Core
         {
             Destroyer = destroyer;
             PlaceBranches(branchParameters);
+
             if (shouldCameraChange) ChangeCameraSize(MaxTotalRadius);
             IsBackground = isBackground;
 
-            IsInited = true;
+            _isInited = true;
         }
 
         public IEnumerable<BranchBase> PlaceBranches(IEnumerable<BranchBaseParameters> branchParameters)
@@ -105,16 +108,30 @@ namespace Core
 
         private BranchBase PlaceBranch(float angle, float length)
         {
-            var branch = Instantiate(BranchPrefab, transform).GetComponent<BranchBase>();
+            var branch = _branchesPool.Get();
             branch.Length = length;
             branch.AnglePosition = angle;
 
             return branch;
         }
 
+        private BranchBase InstantiateBranch()
+        {
+            return Instantiate(BranchPrefab, transform).GetComponent<BranchBase>();
+        }
+
+        private static void OnReleaseBranchToPool(BranchBase pooledBranch)
+        {
+            pooledBranch.gameObject.SetActive(false);
+        }
+        private static void OnGetBranchFromPool(BranchBase pooledBranch)
+        {
+            pooledBranch.gameObject.SetActive(true);
+        }
+
         public void ClearBranches()
         {
-            foreach (var branch in ActiveBranches) Destroy(branch.gameObject);
+            foreach (var branch in ActiveBranches) _branchesPool.Release(branch);
             ActiveBranches.Clear();
         }
 

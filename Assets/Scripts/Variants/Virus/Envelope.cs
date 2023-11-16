@@ -6,7 +6,6 @@ namespace Variants.Virus
     public class Envelope : CoreBase
     {
         private static readonly int OffsetProperty = Shader.PropertyToID("_Offset");
-
         public float OffsetPerSec = 10f;
 
         protected override void Update()
