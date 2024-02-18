@@ -3,6 +3,7 @@ using System.Linq;
 using Branch;
 using Core;
 using Destroyer;
+using Effects;
 using Level;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,7 @@ namespace GameManagement
         public LevelBase TestLevelToLoad;
         public CoreBase CorePrefab;
         public DestroyerBase DestroyerPrefab;
+        public TouchEffectBase TouchEffectPrefab; //TODO: move
 
         public int Score { get; private set; } //TODO: move
         public LevelBase CurrentLevel { get; private set; }
@@ -39,6 +41,8 @@ namespace GameManagement
             core.RotationSpeed = levelToLoad.RotationSpeed;
             var destroyer = destroyers.First(); //TODO: change
             core.Init(levelToLoad.Branches, destroyer, true, false);
+
+            Instantiate(TouchEffectPrefab);
 
             CurrentLevel = levelToLoad;
         }

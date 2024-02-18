@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7805382753011201126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7805382753011201121}
+  - component: {fileID: 5515086510939417493}
+  m_Layer: 0
+  m_Name: ElectricityTouchEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7805382753011201121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7805382753011201126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3205488881432728437}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5515086510939417493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7805382753011201126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b86dd78e85df84cb8666ab82aeb86d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoldAction:
+    m_Name: Hold
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 08e1ff77-e6ea-4800-ac40-1075254894f0
+    m_Processors: 
+    m_Interactions: Hold
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 42bc5f92-3a47-46ee-b99a-ed67898a268d
+      m_Path: <Touchscreen>/primaryTouch/press
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Hold
+      m_Flags: 0
+    m_Flags: 0
+  PositionAction:
+    m_Name: Position
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: a8f5e236-6262-48fa-a330-f77260b1e99b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e8474a6d-60ce-42c1-9c90-75d4dacedadc
+      m_Path: <Touchscreen>/primaryTouch/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Position
+      m_Flags: 0
+    m_Flags: 0
+  Particles: {fileID: 304876448562177423}
+--- !u!1001 &4299721540274832753
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7805382753011201121}
+    m_Modifications:
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9056697402056520894, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_Name
+      value: Electricity
+      objectReference: {fileID: 0}
+    - target: {fileID: 9056697402056520894, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+--- !u!198 &304876448562177423 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4580317458522644734, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+  m_PrefabInstance: {fileID: 4299721540274832753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3205488881432728437 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1717985624481224196, guid: da8d32f7b484c884cb3d84b908c5ed26, type: 3}
+  m_PrefabInstance: {fileID: 4299721540274832753}
+  m_PrefabAsset: {fileID: 0}
