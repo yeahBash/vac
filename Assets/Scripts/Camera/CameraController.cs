@@ -10,7 +10,7 @@ namespace Camera
         private float _initVerticalSize;
         private float VerticalSize => _camera.orthographicSize;
         private float HorizontalSize => _camera.aspect * VerticalSize;
-        public Action<float> OnCameraSizeChanged;
+        public event Action<float> OnCameraSizeChanged;
 
         private void Awake()
         {
