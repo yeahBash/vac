@@ -17,7 +17,6 @@ namespace Core
         public float RotationSpeed = 1f;
         public bool IsRotateOn = true;
         public InputAction HoldAction;
-        private bool _isInited;
         private ObjectPool<BranchBase> _branchesPool;
 
         protected readonly List<BranchBase> ActiveBranches = new();
@@ -93,8 +92,6 @@ namespace Core
 
             if (shouldCameraChange) ChangeCameraSize(MaxTotalRadius);
             IsBackground = isBackground;
-
-            _isInited = true;
         }
 
         public IEnumerable<BranchBase> PlaceBranches(IEnumerable<BranchBaseParameters> branchParameters)

@@ -1,5 +1,6 @@
 using Branch;
 using Branch.DividedParts;
+using Effects;
 using GameManagement;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Variants.Virus
     public class Spike : BranchBase
     {
         public TopBase TopPrefab;
+        public CutEffectBase CutEffectPrefab;
         private TopBase _top;
 
         public override float TotalLength => Length + _top.Length;
@@ -32,7 +34,7 @@ namespace Variants.Virus
             _top.gameObject.transform.SetParent(resPart.transform, true);
 
             CreatePart(0f, GrowingPartWidth, worldPoint.magnitude, null, typeof(ShrinkingPart));
-
+            var cutEffect = Instantiate(CutEffectPrefab, worldPoint, Quaternion.identity);
             IsDivided = true;
 
             Destroy(Growing.gameObject);

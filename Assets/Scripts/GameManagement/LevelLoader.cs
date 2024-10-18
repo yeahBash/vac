@@ -3,6 +3,7 @@ using System.Linq;
 using Branch;
 using Core;
 using Destroyer;
+using Effects;
 using Level;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,8 +19,25 @@ namespace GameManagement
         public LevelBase TestLevelToLoad;
         public CoreBase CorePrefab;
         public DestroyerBase DestroyerPrefab;
+        public TouchEffectBase TouchEffectPrefab; //TODO: move
+        
+        //TODO: move
+        private int _score;
+        private int Score
+        {
+            get => _score;
+            set
+            {
+                OnScoreDeltaChanged?.Invoke(value - _score);
+                _score = value;
+                OnScoreChanged?.Invoke(_score);
+            }
+        }
 
-        public int Score { get; private set; } //TODO: move
+        public event Action<int> OnScoreChanged;
+        public event Action<int> OnScoreDeltaChanged;
+        public event Action OnLevelReset;
+
         public LevelBase CurrentLevel { get; private set; }
 
         private void Awake()
@@ -40,6 +58,8 @@ namespace GameManagement
             var destroyer = destroyers.First(); //TODO: change
             core.Init(levelToLoad.Branches, destroyer, true, false);
 
+            Instantiate(TouchEffectPrefab);
+
             CurrentLevel = levelToLoad;
         }
 
@@ -49,6 +69,7 @@ namespace GameManagement
             if (existingCameraController != null) existingCameraController.ResetCamera();
 
             Score = 0;
+            OnLevelReset?.Invoke();
         }
 
         //TODO: move

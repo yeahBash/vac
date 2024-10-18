@@ -1,3 +1,4 @@
+using System;
 using GameManagement;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Camera
         private float _initVerticalSize;
         private float VerticalSize => _camera.orthographicSize;
         private float HorizontalSize => _camera.aspect * VerticalSize;
+        public event Action<float> OnCameraSizeChanged;
 
         private void Awake()
         {
@@ -29,13 +31,24 @@ namespace Camera
             var isHorizontalMin = VerticalSize > HorizontalSize;
             var minSize = isHorizontalMin ? HorizontalSize : VerticalSize;
             var resSize = Mathf.Max(minSize, targetSize);
-            _camera.orthographicSize =
-                Mathf.Max(_initVerticalSize, isHorizontalMin ? resSize / _camera.aspect : resSize);
+            var size = Mathf.Max(_initVerticalSize, isHorizontalMin ? resSize / _camera.aspect : resSize);
+            SetCameraOrthographicSize(size);
         }
 
         public void ResetCamera()
         {
-            _camera.orthographicSize = _initVerticalSize;
+            SetCameraOrthographicSize(_initVerticalSize);
+        }
+
+        private void SetCameraOrthographicSize(float size)
+        {
+            _camera.orthographicSize = size;
+            OnCameraSizeChanged?.Invoke(VerticalSize / _initVerticalSize);
+        }
+
+        public Vector3 ScreenToWorldPoint(Vector3 screenPos)
+        {
+            return _camera.ScreenToWorldPoint(screenPos);
         }
     }
 }
