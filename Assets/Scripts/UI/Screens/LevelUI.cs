@@ -1,23 +1,46 @@
 using GameManagement;
-using TMPro;
-using UnityEngine.UI;
 
 namespace UI.Screens
 {
     public class LevelUI : Screen
     {
-        public TextMeshProUGUI ScoreText;
-        public Image ScoreIcon;
+        public ScoreHolder ScoreHolder;
 
-        //TODO: change (add event)
-        private void Update()
+        private void Awake()
         {
-            ScoreText.text = GameManager.Instance.LevelLoader.Score.ToString();
+            GameManager.Instance.LevelLoader.OnScoreChanged += ChangeScoreText;
+            GameManager.Instance.LevelLoader.OnScoreDeltaChanged += ChangeScoreIncrementText;
+            GameManager.Instance.LevelLoader.OnLevelReset += ResetScore;
+        }
+
+        private void ChangeScoreText(int score)
+        {
+            ScoreHolder.SetScore(score);
+        }
+
+        private void ChangeScoreIncrementText(int score)
+        {
+            ScoreHolder.AddIncrement(score);
+        }
+
+        private void ResetScore()
+        {
+            ScoreHolder.ResetIncrements();
         }
 
         public void Restart(bool isRandom)
         {
             GameManager.Instance.LevelLoader.Restart(isRandom);
+        }
+
+        private void OnDestroy()
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.LevelLoader.OnScoreChanged -= ChangeScoreText;
+                GameManager.Instance.LevelLoader.OnScoreDeltaChanged -= ChangeScoreIncrementText;
+                GameManager.Instance.LevelLoader.OnLevelReset -= ResetScore;
+            }
         }
     }
 }

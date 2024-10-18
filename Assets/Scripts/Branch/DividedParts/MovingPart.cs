@@ -32,7 +32,7 @@ namespace Branch.DividedParts
 
         private void Init()
         {
-            _targetIcon = _levelScreen.ScoreIcon.GetComponent<RectTransform>();
+            _targetIcon = _levelScreen.ScoreHolder.Icon.GetComponent<RectTransform>();
             _rectTransform = gameObject.AddComponent<RectTransform>();
 
             _rectTransform.anchorMax = _targetIcon.anchorMax;
